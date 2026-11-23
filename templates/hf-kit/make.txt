@@ -1,0 +1,79 @@
+"""Dựng âm thanh + timing cho một Reel HyperFrames của AUTOFB.
+Dùng: python3 make.py <thư mục dự án> <giọng> <tốc độ> <mood: cozy|tech|synth|candle>
+Thư mục dự án có lines.txt (mỗi dòng "cảnh|lời đọc") và index.tpl.html. Kết quả: assets/vo/*.wav, assets/mix.wav, timing.json, index.html."""
+import sys, os, json, subprocess, numpy as np, soundfile as sf
+P, VOICE, SPEED, MOOD = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4]
+HF_PREFIX = os.environ.get('HF_PREFIX')
+HF_CMD = os.environ.get('HF_CMD')
+WIN = os.name == 'nt'
+SR = 44100
+raw = [l.strip().split('|', 1) for l in open(os.path.join(P, 'lines.txt'), encoding='utf-8') if l.strip()]
+os.makedirs(os.path.join(P, 'assets/vo'), exist_ok=True)
+for i, (sc, txt) in enumerate(raw, 1):
+    out = os.path.join(P, f'assets/vo/l{i}.wav')
+    base = HF_CMD.split() if HF_CMD else (['npx.cmd' if WIN else 'npx'] + (['--prefix', HF_PREFIX] if HF_PREFIX else []) + ['hyperframes'])
+    cmd = base + ['tts', txt, '-v', VOICE, '-s', SPEED, '-o', out, '--json']
+    r = subprocess.run(subprocess.list2cmdline(cmd) if WIN else cmd, shell=WIN, capture_output=True, timeout=300)
+    if r.returncode: sys.exit('TTS lỗi: ' + (r.stderr or r.stdout).decode('utf-8', 'replace')[-500:])
+def load(i):
+    a, sr = sf.read(os.path.join(P, f'assets/vo/l{i}.wav')); a = a if a.ndim == 1 else a.mean(1)
+    n = int(len(a) * SR / sr); a = np.interp(np.linspace(0, len(a) - 1, n), np.arange(len(a)), a)
+    th = 0.01 * np.abs(a).max(); idx = np.where(np.abs(a) > th)[0]; return a[max(0, idx[0] - 200):idx[-1] + 800]
+t = 0.35; segs = []; prev = int(raw[0][0])
+for i, (sc, txt) in enumerate(raw, 1):
+    sc = int(sc)
+    if sc != prev: t += 0.45; prev = sc
+    a = load(i); segs.append((t, a, txt, sc)); t += len(a) / SR + 0.22
+T = t + 1.4; N = int(T * SR); tt = np.arange(N) / SR
+vo = np.zeros(N)
+for s, a, _, _ in segs: i = int(s * SR); vo[i:i + len(a)] += a
+vo = vo / np.abs(vo).max() * 0.89
+PRE = {'cozy': (82, [[261.63, 329.63, 392.0, 493.88], [220.0, 261.63, 329.63, 392.0], [174.61, 220.0, 261.63, 329.63], [196.0, 246.94, 293.66, 349.23]], 1, 1, 0),
+       'tech': (96, [[220.0, 261.63, 329.63, 392.0], [174.61, 220.0, 261.63, 329.63], [261.63, 329.63, 392.0, 493.88], [196.0, 246.94, 293.66, 392.0]], 1, 1, 0),
+       'synth': (100, [[220.0, 261.63, 329.63, 392.0], [174.61, 220.0, 261.63, 329.63], [261.63, 329.63, 392.0, 493.88], [196.0, 246.94, 293.66, 392.0]], 1, 1, 1),
+       'candle': (66, [[196.0, 246.94, 293.66, 369.99], [164.81, 196.0, 246.94, 293.66], [130.81, 164.81, 196.0, 246.94], [146.83, 185.0, 220.0, 261.63]], 0, 0, 0)}
+bpm, chords, kick, hat, bass8 = PRE[MOOD]; beat = 60 / bpm; bar = 4 * beat
+mus = np.zeros(N); rng = np.random.default_rng(1)
+for b in range(int(T / bar) + 1):
+    st = b * bar; ch = chords[b % 4]; i0 = int(st * SR); i1 = min(N, int((st + bar + .3) * SR)); seg = tt[i0:i1] - st
+    env = np.minimum(1, seg / .6) * np.exp(-seg * (.12 if MOOD == 'candle' else .25))
+    for f in ch:
+        harm = (1, 2, 3, 4) if MOOD == 'synth' else (1,)
+        for hk in harm: mus[i0:i1] += (.035 / hk if MOOD == 'synth' else .05) * env * (np.sin(2 * np.pi * f / 2 * hk * seg) + (np.sin(2 * np.pi * f / 2 * 1.004 * hk * seg) if MOOD == 'synth' else .3 * np.sin(2 * np.pi * f * seg)))
+    for k in range(4):
+        ks = st + k * beat; j0 = int(ks * SR)
+        if j0 >= N: continue
+        if kick and k in (0, 2): j1 = min(N, j0 + int(.25 * SR)); s2 = tt[j0:j1] - ks; mus[j0:j1] += .35 * np.sin(2 * np.pi * (55 + 60 * np.exp(-s2 * 30)) * s2) * np.exp(-s2 * 14)
+        if hat: h0 = int((ks + beat / 2) * SR); h1 = min(N, h0 + int(.05 * SR))
+        if hat and h0 < N: mus[h0:h1] += .04 * rng.standard_normal(h1 - h0) * np.exp(-np.arange(h1 - h0) / SR * 80)
+        if bass8:
+            for e8 in (0, 1):
+                bs = ks + e8 * beat / 2; b0 = int(bs * SR); b1 = min(N, b0 + int(beat / 2 * SR)); s3 = tt[b0:b1] - bs
+                if b0 < N: mus[b0:b1] += .09 * np.sign(np.sin(2 * np.pi * ch[0] / 4 * s3)) * np.exp(-s3 * 6)
+    steps = 4 if MOOD == 'candle' else 8
+    for k in range(steps):
+        ns = st + k * bar / steps; f = ch[k % 4] * 2; j0 = int(ns * SR); j1 = min(N, j0 + int(.6 * SR)); s2 = tt[j0:j1] - ns
+        if j0 < N: mus[j0:j1] += .025 * np.sin(2 * np.pi * f * s2) * np.exp(-s2 * (4 if MOOD == 'candle' else 7))
+mus = np.convolve(mus, np.ones(6) / 6, 'same') * np.minimum(1, tt / 1.5) * np.minimum(1, (T - tt) / 1.5)
+env = np.convolve(np.abs(vo), np.ones(4410) / 4410, 'same'); mus = mus / np.abs(mus).max() * .32 * (1 - .55 * np.clip(env / .08, 0, 1))
+sfx = np.zeros(N); starts = []; pv = None
+for s, a, l, sc in segs:
+    if sc != pv: starts.append(s - .3); pv = sc
+for s in starts[1:]:
+    i = int(s * SR); n = int(.45 * SR); w = np.convolve(rng.standard_normal(n), np.ones(30) / 30, 'same') * np.sin(np.pi * np.arange(n) / n) ** 2
+    sfx[i:i + n] += (.12 if MOOD == 'candle' else .22) * w[:max(0, min(n, N - i))]
+mix = vo + mus + sfx; mix = mix / max(1, np.abs(mix).max() / .95)
+sf.write(os.path.join(P, 'assets/mix.wav'), np.stack([mix, mix], 1), SR)
+data = {'T': round(T, 2), 'scenes': [], 'lines': []}
+for s, a, l, sc in segs:
+    d = len(a) / SR; words = l.split(); w = [len(x) + 1.5 for x in words]; tot = sum(w); c = s; ws = []
+    for x, wi in zip(words, w): dd = d * wi / tot; ws.append([x, round(c, 3), round(c + dd, 3)]); c += dd
+    data['lines'].append({'text': l, 'start': round(s, 3), 'end': round(s + d, 3), 'scene': sc, 'words': ws})
+for sc in sorted(set(int(x[0]) for x in raw)):
+    ls = [x for x in data['lines'] if x['scene'] == sc]; data['scenes'].append({'id': sc, 'start': round(ls[0]['start'] - .3, 3) if sc > 1 else 0})
+for i, s in enumerate(data['scenes']): s['end'] = data['scenes'][i + 1]['start'] if i + 1 < len(data['scenes']) else data['T']
+json.dump(data, open(os.path.join(P, 'timing.json'), 'w'))
+h = open(os.path.join(P, 'index.tpl.html'), encoding='utf-8').read().replace('__TIMING__', json.dumps(data)).replace('__T__', str(data['T']))
+for s in data['scenes']: h = h.replace(f"__S{s['id']}__", str(s['start'])).replace(f"__D{s['id']}__", str(round(s['end'] - s['start'], 3)))
+open(os.path.join(P, 'index.html'), 'w', encoding='utf-8').write(h)
+print(data['T'], [(s['id'], s['start'], s['end']) for s in data['scenes']])

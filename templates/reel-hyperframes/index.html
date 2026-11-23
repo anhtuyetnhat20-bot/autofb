@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en" data-resolution="portrait">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1080, height=1920" />
+<script src="assets/gsap.min.js"></script>
+<style>
+@font-face { font-family:"Fredoka"; src:url(assets/fonts/fredoka-latin-600-normal.woff2) format("woff2"); font-weight:600; }
+@font-face { font-family:"Fredoka"; src:url(assets/fonts/fredoka-latin-700-normal.woff2) format("woff2"); font-weight:700; }
+@font-face { font-family:"Inter"; src:url(assets/fonts/inter-latin-400-normal.woff2) format("woff2"); font-weight:400; }
+@font-face { font-family:"Inter"; src:url(assets/fonts/inter-latin-600-normal.woff2) format("woff2"); font-weight:600; }
+@font-face { font-family:"Inter"; src:url(assets/fonts/inter-latin-800-normal.woff2) format("woff2"); font-weight:800; }
+:root { --navy:#12213A; --navy2:#1C3557; --teal:#2A8C8C; --cream:#FFF4E2; --orange:#FF8A3D; --yellow:#FFD166; --ink:#FFFFFF; --muted:#BFD0E6;
+  --display:"Fredoka", "Inter", sans-serif; --body:"Inter", sans-serif; }
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { width:1080px; height:1920px; overflow:hidden; background:var(--navy); }
+#root { position:relative; width:1080px; height:1920px; overflow:hidden; font-family:var(--body); color:var(--ink); }
+.clip { position:absolute; inset:0; }
+#bg { background:radial-gradient(1200px 900px at 75% 18%, #2D4F7C 0%, transparent 60%), radial-gradient(900px 900px at 10% 85%, #6B3E2E 0%, transparent 60%), linear-gradient(170deg, #12213A 0%, #1B2F4F 55%, #2B2A3A 100%); }
+#glow { position:absolute; width:900px; height:900px; left:90px; top:420px; border-radius:50%; background:radial-gradient(circle, rgba(255,170,90,.28), rgba(255,170,90,0) 65%); }
+.drop { position:absolute; width:3px; border-radius:3px; background:linear-gradient(180deg, rgba(190,215,255,0), rgba(190,215,255,.55)); }
+#win { position:absolute; left:60px; right:60px; top:150px; bottom:60px; border-radius:48px; border:3px solid rgba(255,255,255,.06); }
+/* chrome */
+#bars { position:absolute; left:90px; right:90px; top:206px; display:flex; gap:10px; z-index:20; }
+#bars i { flex:1; height:8px; border-radius:4px; background:rgba(255,255,255,.25); overflow:hidden; display:block; }
+#bars i b { display:block; height:100%; width:0; background:#fff; }
+#pill { position:absolute; left:50%; transform:translateX(-50%); top:200px; display:flex; align-items:center; gap:14px; z-index:20; }
+#pill .av { width:64px; height:64px; border-radius:50%; background:var(--yellow); display:grid; place-items:center; }
+#pill span { font:700 32px var(--display); letter-spacing:.2px; }
+#cap { position:absolute; left:120px; right:190px; top:1175px; height:160px; z-index:30; }
+.cl { position:absolute; inset:0; display:flex; flex-wrap:wrap; justify-content:center; align-content:center; gap:4px 14px; opacity:0; }
+.cw { font:800 46px/1.15 var(--body); color:#FFFFFF; padding:4px 10px; border-radius:12px; text-shadow:0 3px 14px rgba(0,0,0,.45); }
+/* scenes */
+.h1 { position:absolute; left:120px; right:170px; text-align:center; font:700 112px/1.02 var(--display); letter-spacing:-1px; text-shadow:0 8px 30px rgba(0,0,0,.35); }
+.h2 { position:absolute; left:120px; right:170px; text-align:center; font:700 84px/1.05 var(--display); }
+.acc { color:var(--yellow); } .org { color:var(--orange); }
+.kick { position:absolute; left:50%; transform:translateX(-50%); padding:14px 30px; border-radius:40px; background:var(--orange); color:#1a1209; font:800 34px var(--body); letter-spacing:3px; white-space:nowrap; }
+.wd { display:inline-block; }
+.toy { position:absolute; width:190px; height:190px; }
+.card { position:absolute; left:110px; right:110px; height:220px; border-radius:40px; background:rgba(255,255,255,.1); border:2px solid rgba(255,255,255,.16); display:flex; align-items:center; gap:34px; padding:0 40px; backdrop-filter:blur(6px); }
+.card .n { width:110px; height:110px; flex:none; border-radius:32px; background:var(--yellow); color:#1a1209; display:grid; place-items:center; font:700 72px var(--display); }
+.card .t { font:700 50px/1.1 var(--display); }
+.card .s { font:600 32px/1.3 var(--body); color:var(--muted); margin-top:6px; }
+.card .ic { margin-left:auto; flex:none; }
+.mono { font-variant-numeric:tabular-nums; }
+#tbl { position:absolute; left:110px; right:110px; top:480px; border-radius:40px; background:rgba(255,255,255,.08); border:2px solid rgba(255,255,255,.14); padding:30px 34px 34px; }
+.tr { display:grid; grid-template-columns:220px 1fr 1fr 1fr; align-items:center; gap:14px; height:128px; border-top:2px solid rgba(255,255,255,.1); }
+.tr:first-child { border-top:0; height:150px; }
+.tr .lb { font:700 36px/1.15 var(--display); }
+.tr .cell { display:flex; flex-direction:column; align-items:center; gap:10px; }
+.bar { width:130px; height:22px; border-radius:11px; background:rgba(255,255,255,.15); overflow:hidden; } .bar b { display:block; height:100%; width:0; background:var(--yellow); border-radius:11px; }
+.val { font:800 34px var(--body); }
+.dots { display:flex; gap:8px; } .dots i { width:22px; height:22px; border-radius:50%; background:rgba(255,255,255,.18); display:block; } .dots i.on { background:var(--orange); }
+.colhi { position:absolute; top:18px; bottom:18px; width:180px; border-radius:30px; border:4px solid var(--yellow); background:rgba(255,209,102,.08); opacity:0; }
+.badge { position:absolute; padding:14px 26px; border-radius:30px; background:var(--yellow); color:#1a1209; font:800 30px var(--body); letter-spacing:1.5px; white-space:nowrap; }
+.note { position:absolute; font:600 28px var(--body); color:var(--muted); }
+.btn { position:absolute; left:50%; padding:30px 70px; border-radius:60px; background:var(--yellow); color:#1a1209; font:800 46px var(--body); display:flex; align-items:center; gap:18px; white-space:nowrap; box-shadow:0 18px 50px rgba(255,209,102,.35); }
+.qcard { position:absolute; left:110px; right:110px; border-radius:40px; background:var(--cream); color:#1D2433; padding:36px 44px; font:700 50px/1.12 var(--display); box-shadow:0 30px 60px rgba(0,0,0,.35); }
+.qcard small { display:block; font:800 28px var(--body); letter-spacing:3px; color:#B34E12; margin-bottom:16px; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="30.73" data-width="1080" data-height="1920">
+
+  <div id="bg" class="clip" data-start="0" data-duration="30.73"><div id="glow"></div><div id="rain"></div></div>
+
+  <!-- 1. Hook -->
+  <div id="s1" class="clip" data-start="0" data-duration="4.353">
+    <div class="h1" id="s1a" style="top:300px;font-size:96px">A whole <span class="acc">basket</span> of toys…</div>
+    <div class="h1" id="s1b" style="top:300px;font-size:96px;opacity:0">…and plays with <span class="org">ONE.</span></div>
+    <div id="s1toys"></div>
+    <svg id="basket" style="position:absolute;left:190px;top:820px" width="700" height="360" viewBox="0 0 700 360">
+      <path d="M40 60 L660 60 L590 340 L110 340 Z" fill="#B9773F"/>
+      <path d="M40 60 L660 60 L645 120 L55 120 Z" fill="#D18A4A"/>
+      <g stroke="#8E5528" stroke-width="10" stroke-linecap="round" opacity=".8"><path d="M80 170 L620 170"/><path d="M95 230 L605 230"/><path d="M110 290 L590 290"/></g>
+      <g stroke="#8E5528" stroke-width="8" opacity=".55"><path d="M200 120 L215 340"/><path d="M350 120 L350 340"/><path d="M500 120 L485 340"/></g>
+    </svg>
+  </div>
+
+  <!-- 2. Question -->
+  <div id="s2" class="clip" data-start="4.353" data-duration="4.492">
+    <div class="kick" id="s2k" style="top:300px">THE TOY TEST</div>
+    <div class="h1" id="s2t" style="top:400px"><span class="wd">Which</span> <span class="wd">toy</span> <span class="wd acc">actually</span> <span class="wd">works?</span></div>
+    <svg id="watch" style="position:absolute;left:340px;top:660px" width="400" height="448" viewBox="0 0 500 560">
+      <rect x="215" y="10" width="70" height="50" rx="12" fill="#FFD166"/><rect x="200" y="50" width="100" height="26" rx="10" fill="#E9B34A"/>
+      <circle cx="250" cy="300" r="225" fill="#FFF4E2"/><circle cx="250" cy="300" r="225" fill="none" stroke="#FF8A3D" stroke-width="22"/>
+      <g id="ticks" stroke="#1D2433" stroke-width="8" stroke-linecap="round"></g>
+      <path id="arc" d="" fill="rgba(255,138,61,.28)"/>
+      <line id="hand" x1="250" y1="300" x2="250" y2="120" stroke="#1D2433" stroke-width="14" stroke-linecap="round"/>
+      <circle cx="250" cy="300" r="20" fill="#1D2433"/>
+    </svg>
+  </div>
+
+  <!-- 3. Steps -->
+  <div id="s3" class="clip" data-start="8.845" data-duration="6.153">
+    <div class="kick" id="s3k" style="top:300px">HOW IT WORKS</div>
+    <div class="card" id="c1" style="top:400px"><div class="n">1</div><div><div class="t">Pick 3 toys</div><div class="s">From the basket you already have</div></div><div class="ic" id="c1i"></div></div>
+    <div class="card" id="c2" style="top:640px"><div class="n">2</div><div><div class="t">Start the timer</div><div class="s">When your dog picks one up</div></div><div class="ic"><div class="mono" id="clock" style="font:700 64px var(--display);color:var(--yellow)">00:00</div></div></div>
+    <div class="card" id="c3" style="top:880px"><div class="n">3</div><div><div class="t">Stop it</div><div class="s">When they walk away</div></div><div class="ic" id="paws" style="position:relative;width:170px;height:120px"></div></div>
+  </div>
+
+  <!-- 4. Scorecard -->
+  <div id="s4" class="clip" data-start="14.998" data-duration="6.113">
+    <div class="h2" id="s4t" style="top:300px">Score <span class="acc">each</span> toy</div>
+    <div class="note" id="s4n" style="top:410px;left:0;right:0;text-align:center">Example scores · try it with your own dog</div>
+    <div id="tbl">
+      <div class="colhi" id="hi"></div>
+      <div class="tr" id="thead"><div></div><div class="cell" id="h1"></div><div class="cell" id="h2"></div><div class="cell" id="h3"></div></div>
+      <div class="tr"><div class="lb">Busy minutes</div><div class="cell"><div class="bar"><b data-w="90"></b></div><div class="val mono" data-n="12">0</div></div><div class="cell"><div class="bar"><b data-w="30"></b></div><div class="val mono" data-n="4">0</div></div><div class="cell"><div class="bar"><b data-w="55"></b></div><div class="val mono" data-n="7">0</div></div></div>
+      <div class="tr"><div class="lb">Durability</div><div class="cell"><div class="dots" data-on="4"></div></div><div class="cell"><div class="dots" data-on="2"></div></div><div class="cell"><div class="dots" data-on="5"></div></div></div>
+      <div class="tr"><div class="lb">Mess</div><div class="cell"><div class="dots" data-on="1"></div></div><div class="cell"><div class="dots" data-on="4"></div></div><div class="cell"><div class="dots" data-on="2"></div></div></div>
+    </div>
+    <div class="badge" id="win2" style="top:1095px;left:170px;opacity:0">✓ WORTH BUYING AGAIN</div>
+  </div>
+
+  <!-- 5. Safety -->
+  <div id="s5" class="clip" data-start="21.111" data-duration="3.302">
+    <svg id="shield" style="position:absolute;left:390px;top:290px" width="300" height="340" viewBox="0 0 300 340">
+      <path d="M150 10 L280 60 L270 190 C260 270 200 310 150 330 C100 310 40 270 30 190 L20 60 Z" fill="#2A8C8C"/>
+      <path d="M95 175 L135 215 L210 135" fill="none" stroke="#FFF4E2" stroke-width="26" stroke-linecap="round" stroke-linejoin="round" id="chk"/>
+    </svg>
+    <div class="h2" id="s5t" style="top:670px"><span class="acc">Stay close.</span></div>
+    <div class="h2" id="s5u" style="top:770px;font-size:62px">Toss anything cracked or shredded.</div>
+    <div id="s5toy" style="position:absolute;left:465px;top:960px;width:150px;height:150px"></div>
+  </div>
+
+  <!-- 6. CTA -->
+  <div id="s6" class="clip" data-start="24.413" data-duration="6.317">
+    <svg id="bm" style="position:absolute;left:440px;top:310px" width="200" height="250" viewBox="0 0 200 250"><path d="M20 10 H180 V240 L100 180 L20 240 Z" fill="#FFD166"/></svg>
+    <div class="h2" id="s6t" style="top:575px">Save this for your next <span class="acc">rainy afternoon</span></div>
+    <div class="btn" id="s6b" style="top:780px;transform:translateX(-50%)"><svg width="40" height="50" viewBox="0 0 200 250"><path d="M20 10 H180 V240 L100 180 L20 240 Z" fill="#1a1209"/></svg>Save this post</div>
+    <div class="qcard" id="q" style="top:935px;opacity:0"><small>TELL US</small>Which toy does your dog ignore every time?</div>
+  </div>
+
+  <!-- chrome -->
+  <div id="chrome" class="clip" data-start="0" data-duration="30.73"><div id="flash" style="position:absolute;inset:0;background:linear-gradient(100deg,rgba(255,209,102,0) 20%,rgba(255,209,102,.55) 50%,rgba(255,209,102,0) 80%);opacity:0;z-index:25"></div>
+    <div id="pill" style="opacity:0"><div class="av"><svg width="44" height="44" viewBox="0 0 100 100"><ellipse cx="50" cy="62" rx="20" ry="17" fill="#1a1209"/><circle cx="24" cy="40" r="10" fill="#1a1209"/><circle cx="42" cy="26" r="10" fill="#1a1209"/><circle cx="60" cy="26" r="10" fill="#1a1209"/><circle cx="77" cy="40" r="10" fill="#1a1209"/></svg></div><span>Apartment Dog Life</span></div>
+    <div id="cap"></div>
+  </div>
+
+  <audio id="mix" data-start="0" data-duration="30.73" src="assets/mix.wav" data-volume="1"></audio>
+</div>
+
+<script id="timing" type="application/json">{"T": 30.73, "scenes": [{"id": 1, "start": 0, "end": 4.353}, {"id": 2, "start": 4.353, "end": 8.845}, {"id": 3, "start": 8.845, "end": 14.998}, {"id": 4, "start": 14.998, "end": 21.111}, {"id": 5, "start": 21.111, "end": 24.413}, {"id": 6, "start": 24.413, "end": 30.73}], "lines": [{"text": "Your dog has a whole basket of toys.", "start": 0.35, "end": 2.313, "scene": 1, "words": [["Your", 0.35, 0.613], ["dog", 0.613, 0.829], ["has", 0.829, 1.044], ["a", 1.044, 1.164], ["whole", 1.164, 1.475], ["basket", 1.475, 1.834], ["of", 1.834, 2.002], ["toys.", 2.002, 2.313]]}, {"text": "And plays with exactly one.", "start": 2.533, "end": 3.983, "scene": 1, "words": [["And", 2.533, 2.747], ["plays", 2.747, 3.056], ["with", 3.056, 3.317], ["exactly", 3.317, 3.721], ["one.", 3.721, 3.983]]}, {"text": "So which toy actually works?", "start": 4.653, "end": 6.137, "scene": 2, "words": [["So", 4.653, 4.818], ["which", 4.818, 5.124], ["toy", 5.124, 5.336], ["actually", 5.336, 5.784], ["works?", 5.784, 6.137]]}, {"text": "Let's find out with a simple timer test.", "start": 6.357, "end": 8.475, "scene": 2, "words": [["Let's", 6.357, 6.663], ["find", 6.663, 6.922], ["out", 6.922, 7.134], ["with", 7.134, 7.393], ["a", 7.393, 7.51], ["simple", 7.51, 7.863], ["timer", 7.863, 8.169], ["test.", 8.169, 8.475]]}, {"text": "Pick three toys from the basket.", "start": 9.145, "end": 10.768, "scene": 3, "words": [["Pick", 9.145, 9.393], ["three", 9.393, 9.686], ["toys", 9.686, 9.934], ["from", 9.934, 10.182], ["the", 10.182, 10.385], ["basket.", 10.385, 10.768]]}, {"text": "Start a timer when your dog picks one up.", "start": 10.988, "end": 13.076, "scene": 3, "words": [["Start", 10.988, 11.28], ["a", 11.28, 11.392], ["timer", 11.392, 11.684], ["when", 11.684, 11.931], ["your", 11.931, 12.178], ["dog", 12.178, 12.38], ["picks", 12.38, 12.672], ["one", 12.672, 12.874], ["up.", 12.874, 13.076]]}, {"text": "Stop it when they walk away.", "start": 13.296, "end": 14.628, "scene": 3, "words": [["Stop", 13.296, 13.525], ["it", 13.525, 13.671], ["when", 13.671, 13.9], ["they", 13.9, 14.128], ["walk", 14.128, 14.357], ["away.", 14.357, 14.628]]}, {"text": "Then score each toy on busy minutes, durability, and mess.", "start": 15.298, "end": 18.564, "scene": 4, "words": [["Then", 15.298, 15.578], ["score", 15.578, 15.91], ["each", 15.91, 16.191], ["toy", 16.191, 16.421], ["on", 16.421, 16.599], ["busy", 16.599, 16.88], ["minutes,", 16.88, 17.365], ["durability,", 17.365, 18.003], ["and", 18.003, 18.232], ["mess.", 18.232, 18.564]]}, {"text": "The winner is the one worth buying again.", "start": 18.784, "end": 20.741, "scene": 4, "words": [["The", 18.784, 18.975], ["winner", 18.975, 19.294], ["is", 19.294, 19.443], ["the", 19.443, 19.635], ["one", 19.635, 19.826], ["worth", 19.826, 20.103], ["buying", 20.103, 20.422], ["again.", 20.422, 20.741]]}, {"text": "Stay close, and toss anything cracked or shredded.", "start": 21.411, "end": 24.043, "scene": 5, "words": [["Stay", 21.411, 21.674], ["close,", 21.674, 22.033], ["and", 22.033, 22.248], ["toss", 22.248, 22.512], ["anything", 22.512, 22.966], ["cracked", 22.966, 23.373], ["or", 23.373, 23.541], ["shredded.", 23.541, 24.043]]}, {"text": "Save this for your next rainy afternoon.", "start": 24.713, "end": 26.733, "scene": 6, "words": [["Save", 24.713, 24.963], ["this", 24.963, 25.213], ["for", 25.213, 25.417], ["your", 25.417, 25.667], ["next", 25.667, 25.916], ["rainy", 25.916, 26.211], ["afternoon.", 26.211, 26.733]]}, {"text": "Which toy does your dog ignore every time?", "start": 26.953, "end": 29.107, "scene": 6, "words": [["Which", 26.953, 27.251], ["toy", 27.251, 27.457], ["does", 27.457, 27.709], ["your", 27.709, 27.962], ["dog", 27.962, 28.168], ["ignore", 28.168, 28.512], ["every", 28.512, 28.809], ["time?", 28.809, 29.107]]}]}</script>
+<script>
+const D = JSON.parse(document.getElementById('timing').textContent);
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+// deterministic pseudo-random
+let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+const TOY = {
+  ball: '<svg viewBox="0 0 200 200" width="100%" height="100%"><circle cx="100" cy="100" r="80" fill="#D9F25C"/><path d="M35 60 C80 90 80 110 35 140" fill="none" stroke="#fff" stroke-width="10"/><path d="M165 60 C120 90 120 110 165 140" fill="none" stroke="#fff" stroke-width="10"/></svg>',
+  rope: '<svg viewBox="0 0 200 200" width="100%" height="100%"><rect x="45" y="80" width="110" height="40" rx="18" fill="#4FB3BF"/><g stroke="#2A6F79" stroke-width="8"><path d="M65 82 L80 118"/><path d="M90 82 L105 118"/><path d="M115 82 L130 118"/></g><circle cx="40" cy="100" r="30" fill="#FF8A3D"/><circle cx="160" cy="100" r="30" fill="#FF8A3D"/></svg>',
+  bone: '<svg viewBox="0 0 200 200" width="100%" height="100%"><path d="M55 70 a22 22 0 1 1 25 25 L120 135 a22 22 0 1 1 25 25 a22 22 0 1 1 -25 -25 L80 95 a22 22 0 1 1 -25 -25z" fill="#FFF4E2"/></svg>',
+  duck: '<svg viewBox="0 0 200 200" width="100%" height="100%"><ellipse cx="95" cy="125" rx="65" ry="45" fill="#FFD166"/><circle cx="130" cy="75" r="32" fill="#FFD166"/><path d="M158 72 L190 82 L158 92 Z" fill="#FF8A3D"/><circle cx="138" cy="68" r="6" fill="#1D2433"/></svg>',
+  puzzle: '<svg viewBox="0 0 200 200" width="100%" height="100%"><rect x="30" y="40" width="140" height="120" rx="24" fill="#9B7BFF"/><circle cx="70" cy="80" r="14" fill="#5B3FC0"/><circle cx="130" cy="80" r="14" fill="#5B3FC0"/><circle cx="70" cy="120" r="14" fill="#5B3FC0"/><circle cx="130" cy="120" r="14" fill="#5B3FC0"/></svg>',
+  paw: '<svg viewBox="0 0 100 100" width="100%" height="100%"><ellipse cx="50" cy="62" rx="20" ry="17" fill="#FFD166"/><circle cx="24" cy="40" r="10" fill="#FFD166"/><circle cx="42" cy="26" r="10" fill="#FFD166"/><circle cx="60" cy="26" r="10" fill="#FFD166"/><circle cx="77" cy="40" r="10" fill="#FFD166"/></svg>'
+};
+const tl = gsap.timeline({ paused: true });
+const E = 'power3.out';
+
+// rain
+const rain = $('#rain');
+for (let i = 0; i < 70; i++) { const d = document.createElement('i'); d.className = 'drop'; const h = 60 + rnd() * 120; Object.assign(d.style, { left: (rnd() * 1080) + 'px', top: (-200 - rnd() * 1900) + 'px', height: h + 'px', opacity: .25 + rnd() * .5 }); rain.appendChild(d);
+  tl.to(d, { y: 2300, duration: 1.4 + rnd() * 1.2, ease: 'none', repeat: 30 }, 0); }
+tl.to('#glow', { x: 80, y: -60, scale: 1.12, duration: 15, yoyo: true, repeat: 1, ease: 'sine.inOut' }, 0);
+
+// progress bars per scene
+// Chuyển cảnh kiểu video: mỗi cảnh đẩy máy chậm (push-in), vào bằng zoom/trượt, ra bằng mờ nhanh; dải sáng quét khi đổi cảnh.
+const ENTER = [{}, { x: 260 }, { y: 220 }, { scale: 1.25 }, { x: -260 }, { y: -200 }];
+D.scenes.forEach((sc, i) => { const el = document.getElementById('s' + sc.id), d = sc.end - sc.start;
+  tl.fromTo(el, { scale: 1 }, { scale: 1.06, duration: d, ease: 'none', transformOrigin: '50% 45%' }, sc.start);
+  if (i) tl.from(el, { ...ENTER[i], opacity: 0, duration: .45, ease: 'power3.out' }, sc.start);
+  if (i < D.scenes.length - 1) tl.to(el, { opacity: 0, filter: 'blur(10px)', duration: .25, ease: 'power1.in' }, sc.end - .25);
+  if (i) { tl.fromTo('#flash', { opacity: 0, x: -1100 }, { opacity: .9, x: 0, duration: .22, ease: 'power2.in' }, sc.start - .2); tl.to('#flash', { opacity: 0, x: 1100, duration: .25, ease: 'power2.out' }, sc.start + .02); } });
+// Tên page chỉ hiện ở cảnh cuối, như chữ ký cuối video.
+tl.to('#pill', { opacity: 1, duration: .5 }, D.scenes[5].start + 1.2);
+
+// captions: word by word
+const cap = $('#cap');
+D.lines.forEach((ln, li) => {
+  const el = document.createElement('div'); el.className = 'cl';
+  ln.words.forEach(w => { const s = document.createElement('span'); s.className = 'cw'; s.textContent = w[0]; el.appendChild(s); });
+  cap.appendChild(el);
+  const next = D.lines[li + 1], off = next && next.start - ln.end < .6 ? next.start - .02 : ln.end + .35;
+  tl.fromTo(el, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: .15, ease: E }, ln.start - .08);
+  tl.to(el, { opacity: 0, duration: .1 }, off);
+  [...el.children].forEach((s, k) => { tl.to(s, { color: '#1a1209', backgroundColor: '#FFD166', scale: 1.06, duration: .08 }, ln.words[k][1]); tl.to(s, { color: '#FFFFFF', backgroundColor: 'rgba(255,209,102,0)', scale: 1, duration: .1 }, ln.words[k][2]); });
+});
+const L = i => D.lines[i - 1].start;
+
+// ---- 1. hook
+const toys = ['rope', 'bone', 'ball', 'duck', 'puzzle'], tpos = [[170, 700], [340, 660], [445, 620], [580, 660], [740, 700]];
+toys.forEach((k, i) => { const d = document.createElement('div'); d.className = 'toy'; d.id = 't_' + k; d.innerHTML = TOY[k]; Object.assign(d.style, { left: tpos[i][0] + 'px', top: tpos[i][1] + 'px' }); $('#s1toys').appendChild(d);
+  tl.from(d, { y: -900, rotation: (i - 2) * 25, duration: .7, ease: 'bounce.out' }, .35 + i * .12); });
+tl.from('#basket', { y: 300, opacity: 0, duration: .6, ease: E }, .1);
+tl.from('#s1a', { y: 40, opacity: 0, duration: .45, ease: E }, .2);
+tl.to('#s1a', { y: -30, opacity: 0, duration: .3 }, L(2) - .2);
+tl.fromTo('#s1b', { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: .4, ease: E }, L(2) - .05);
+['rope', 'bone', 'duck', 'puzzle'].forEach((k, i) => tl.to('#t_' + k, { opacity: .25, filter: 'grayscale(1)', y: 60, duration: .5, ease: E }, L(2) + i * .05));
+tl.to('#t_ball', { scale: 1.45, y: -20, duration: .6, ease: 'back.out(2)' }, L(2) + .1);
+tl.to('#t_ball', { rotation: 360, duration: 1.4, ease: 'none' }, L(2) + .1);
+
+// ---- 2. question + stopwatch
+const tk = $('#ticks'); for (let i = 0; i < 12; i++) { const a = i / 12 * Math.PI * 2, r1 = 190, r2 = i % 3 ? 172 : 158; const l = document.createElementNS('http://www.w3.org/2000/svg', 'line'); l.setAttribute('x1', 250 + Math.sin(a) * r1); l.setAttribute('y1', 300 - Math.cos(a) * r1); l.setAttribute('x2', 250 + Math.sin(a) * r2); l.setAttribute('y2', 300 - Math.cos(a) * r2); tk.appendChild(l); }
+const S2 = D.scenes[1].start;
+tl.from('#s2k', { scale: .6, opacity: 0, duration: .35, ease: 'back.out(2)' }, S2 + .05);
+tl.from('#s2t .wd', { y: 70, opacity: 0, stagger: .12, duration: .4, ease: E }, S2 + .15);
+tl.from('#watch', { scale: .7, opacity: 0, rotation: -12, duration: .6, ease: 'back.out(1.6)', transformOrigin: '50% 60%' }, S2 + .3);
+const arc = { a: 0 }, arcEl = $('#arc');
+tl.to(arc, { a: 300, duration: 3.6, ease: 'none', onUpdate: () => { const a = arc.a * Math.PI / 180, x = 250 + Math.sin(a) * 200, y = 300 - Math.cos(a) * 200; arcEl.setAttribute('d', `M250 300 L250 100 A200 200 0 ${arc.a > 180 ? 1 : 0} 1 ${x} ${y} Z`); } }, S2 + .6);
+tl.fromTo('#hand', { rotation: 0, svgOrigin: '250 300' }, { rotation: 300, svgOrigin: '250 300', duration: 3.6, ease: 'none' }, S2 + .6);
+
+// ---- 3. steps
+const S3 = D.scenes[2].start;
+tl.from('#s3k', { scale: .6, opacity: 0, duration: .35, ease: 'back.out(2)' }, S3 + .05);
+['#c1', '#c2', '#c3'].forEach((c, i) => tl.from(c, { x: i % 2 ? 300 : -300, opacity: 0, duration: .5, ease: E }, L(5 + i) - .15));
+['ball', 'rope', 'puzzle'].forEach((k, i) => { const d = document.createElement('div'); d.style.cssText = 'display:inline-block;width:62px;height:62px;margin-left:-8px'; d.innerHTML = TOY[k]; $('#c1i').appendChild(d); tl.from(d, { scale: 0, duration: .3, ease: 'back.out(3)' }, L(5) + .2 + i * .12); });
+const ck = { s: 0 };
+tl.to(ck, { s: 47, duration: 3.2, ease: 'none', onUpdate: () => { $('#clock').textContent = '00:' + String(Math.floor(ck.s)).padStart(2, '0'); } }, L(6));
+for (let i = 0; i < 4; i++) { const p = document.createElement('div'); p.style.cssText = `position:absolute;width:44px;height:44px;left:${i * 40}px;top:${i % 2 ? 10 : 56}px;transform:rotate(90deg)`; p.innerHTML = TOY.paw; $('#paws').appendChild(p); tl.from(p, { opacity: 0, scale: .4, duration: .2 }, L(7) + .1 + i * .18); }
+tl.to('#clock', { color: '#FF8A3D', scale: 1.15, duration: .2, yoyo: true, repeat: 1 }, L(7) + .4);
+
+// ---- 4. scorecard
+const S4 = D.scenes[3].start;
+['ball', 'rope', 'puzzle'].forEach((k, i) => { const h = $('#h' + (i + 1)); h.innerHTML = `<div style="width:96px;height:96px">${TOY[k]}</div><div style="font:700 30px var(--display)">${k[0].toUpperCase() + k.slice(1)}</div>`; tl.from(h, { y: 30, opacity: 0, duration: .35, ease: E }, S4 + .3 + i * .1); });
+tl.from('#s4t', { y: 40, opacity: 0, duration: .4, ease: E }, S4 + .05);
+tl.from('#s4n', { opacity: 0, duration: .4 }, S4 + .3);
+tl.from('#tbl', { y: 80, opacity: 0, duration: .5, ease: E }, S4 + .15);
+$$('.bar b').forEach((b, i) => tl.to(b, { width: b.dataset.w + '%', duration: .8, ease: 'power2.out' }, L(8) + .3 + i * .15));
+$$('.val').forEach((v, i) => { const o = { n: 0 }, n = +v.dataset.n; tl.to(o, { n, duration: .8, ease: 'power2.out', onUpdate: () => { v.textContent = Math.round(o.n) + ' min'; } }, L(8) + .3 + i * .15); });
+$$('.dots').forEach((d, i) => { for (let k = 0; k < 5; k++) { const e = document.createElement('i'); d.appendChild(e); if (k < +d.dataset.on) { const at = L(8) + 1.1 + (i % 3) * .1 + k * .07 + (i > 2 ? .6 : 0); tl.set(e, { backgroundColor: '#FF8A3D' }, at); tl.fromTo(e, { scale: 1.4 }, { scale: 1, duration: .2, ease: 'back.out(3)' }, at); } } });
+const hi = $('#hi'); hi.style.left = (34 + 220 + 14 - 6) + 'px';
+tl.to('#hi', { opacity: 1, duration: .35 }, L(9));
+tl.fromTo('#win2', { opacity: 0, y: 30, scale: .8 }, { opacity: 1, y: 0, scale: 1, duration: .45, ease: 'back.out(2)' }, L(9) + .2);
+
+// ---- 5. safety
+const S5 = D.scenes[4].start;
+tl.from('#shield', { scale: .5, opacity: 0, duration: .5, ease: 'back.out(2)', transformOrigin: '50% 50%' }, S5 + .05);
+tl.fromTo('#chk', { strokeDasharray: 220, strokeDashoffset: 220 }, { strokeDashoffset: 0, duration: .5, ease: E }, S5 + .4);
+tl.from('#s5t', { y: 40, opacity: 0, duration: .4, ease: E }, L(10) - .05);
+tl.from('#s5u', { y: 40, opacity: 0, duration: .4, ease: E }, L(10) + .6);
+$('#s5toy').innerHTML = TOY.bone + '<svg viewBox="0 0 200 200" style="position:absolute;inset:0" width="100%" height="100%"><path d="M30 30 L170 170 M170 30 L30 170" stroke="#FF5A5A" stroke-width="20" stroke-linecap="round"/></svg>';
+tl.from('#s5toy', { scale: 0, rotation: -30, duration: .4, ease: 'back.out(2.5)' }, L(10) + 1.1);
+
+// ---- 6. CTA
+const S6 = D.scenes[5].start;
+tl.from('#bm', { y: -200, opacity: 0, duration: .55, ease: 'bounce.out' }, S6 + .05);
+tl.from('#s6t', { y: 40, opacity: 0, duration: .45, ease: E }, S6 + .2);
+tl.from('#s6b', { scale: .6, opacity: 0, duration: .45, ease: 'back.out(2)' }, S6 + .5);
+tl.to('#s6b', { scale: 1.06, duration: .45, yoyo: true, repeat: 3, ease: 'sine.inOut' }, S6 + 1);
+tl.fromTo('#q', { opacity: 0, y: 60, rotation: -2 }, { opacity: 1, y: 0, rotation: 0, duration: .5, ease: E }, L(12) - .1);
+
+window.__timelines = window.__timelines || {};
+window.__timelines['main'] = tl;
+tl.seek(0);
+</script>
+</body>
+</html>

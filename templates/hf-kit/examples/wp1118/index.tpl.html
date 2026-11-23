@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en" data-resolution="portrait">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1080, height=1920" />
+<script src="assets/gsap.min.js"></script>
+<script src="assets/core.js"></script>
+<style>
+@font-face { font-family:"Inter"; src:url(assets/fonts/inter-latin-200-normal.woff2) format("woff2"); font-weight:200; }
+@font-face { font-family:"Inter"; src:url(assets/fonts/inter-latin-400-normal.woff2) format("woff2"); font-weight:400; }
+@font-face { font-family:"Inter"; src:url(assets/fonts/inter-latin-600-normal.woff2) format("woff2"); font-weight:600; }
+@font-face { font-family:"Inter"; src:url(assets/fonts/inter-latin-700-normal.woff2) format("woff2"); font-weight:700; }
+@font-face { font-family:"Inter"; src:url(assets/fonts/inter-latin-800-normal.woff2) format("woff2"); font-weight:800; }
+/* Walking Pad Life · Desk Walk Club: navy-indigo, grid, thin vs bold Inter, cyan accent, lavender labels, glass cards */
+:root { --cyan:#7DE3FF; --lav:#A9B4FF; --ink:#F3F5FF; --amber:#FFC857; --glass:rgba(255,255,255,.07); --line:rgba(255,255,255,.14); }
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { width:1080px; height:1920px; overflow:hidden; background:#090D26; }
+#root { position:relative; width:1080px; height:1920px; overflow:hidden; font-family:"Inter"; color:var(--ink); }
+.clip { position:absolute; inset:0; }
+#bg { background:linear-gradient(160deg, #0A0F2E 0%, #141B57 48%, #0B1030 100%); }
+#grid { position:absolute; inset:-200px; background-image:linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px); background-size:72px 72px; }
+.orb { position:absolute; border-radius:50%; }
+#o1 { width:900px; height:900px; left:380px; top:-120px; background:radial-gradient(circle, rgba(92,104,255,.45), rgba(92,104,255,0) 65%); }
+#o2 { width:800px; height:800px; left:-260px; top:1100px; background:radial-gradient(circle, rgba(64,190,230,.28), rgba(64,190,230,0) 65%); }
+.lab { position:absolute; left:110px; font:700 30px "Inter"; letter-spacing:7px; color:var(--lav); }
+.big { position:absolute; left:110px; right:150px; font:800 128px/0.98 "Inter"; letter-spacing:-4px; }
+.thin { font-weight:200; color:var(--cyan); letter-spacing:-3px; }
+.t2 { position:absolute; left:110px; right:150px; font:800 100px/1 "Inter"; letter-spacing:-3px; }
+.sub { position:absolute; left:110px; right:150px; font:200 52px/1.15 "Inter"; color:var(--cyan); letter-spacing:-1px; }
+.glass { position:absolute; border-radius:36px; background:var(--glass); border:1.5px solid var(--line); }
+.chip { position:absolute; padding:14px 26px; border-radius:40px; border:1.5px solid var(--line); background:rgba(125,227,255,.1); font:600 34px "Inter"; white-space:nowrap; }
+.mono { font-variant-numeric:tabular-nums; }
+.step { position:absolute; left:110px; right:150px; height:200px; display:flex; align-items:center; gap:34px; padding:0 40px; }
+.step .n { font:200 92px "Inter"; color:var(--cyan); width:130px; }
+.step b { font:800 64px "Inter"; letter-spacing:-2px; }
+.step small { display:block; font:400 32px "Inter"; color:var(--lav); margin-top:6px; }
+.step svg { margin-left:auto; flex:none; }
+#cap { position:absolute; left:120px; right:190px; top:1180px; height:150px; z-index:30; }
+.cl { position:absolute; inset:0; display:flex; flex-wrap:wrap; justify-content:center; align-content:center; gap:4px 12px; opacity:0; }
+.cw { font:700 44px/1.15 "Inter"; color:#fff; padding:3px 10px; border-radius:10px; text-shadow:0 3px 16px rgba(0,0,0,.5); }
+svg text { font-family:"Inter"; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="__T__" data-width="1080" data-height="1920">
+  <div id="bg" class="clip" data-start="0" data-duration="__T__"><div id="grid"></div><div class="orb" id="o1"></div><div class="orb" id="o2"></div></div>
+
+  <div id="s1" class="clip" data-start="__S1__" data-duration="__D1__">
+    <div class="lab" style="top:300px" id="s1l">BEFORE I WALK</div>
+    <div class="big" style="top:360px"><span id="s1a">2 minutes</span><br><span class="thin" id="s1b">before the pad</span></div>
+    <svg id="ring" style="position:absolute;left:330px;top:640px" width="420" height="420" viewBox="0 0 500 500">
+      <circle cx="250" cy="250" r="200" fill="none" stroke="rgba(255,255,255,.1)" stroke-width="26"/>
+      <circle id="arc1" cx="250" cy="250" r="200" fill="none" stroke="#7DE3FF" stroke-width="26" stroke-linecap="round" transform="rotate(-90 250 250)" stroke-dasharray="1257" stroke-dashoffset="1257"/>
+      <text id="rt" x="250" y="270" text-anchor="middle" fill="#F3F5FF" font-size="110" font-weight="200" class="mono">2:00</text>
+      <text x="250" y="330" text-anchor="middle" fill="#A9B4FF" font-size="30" font-weight="700" letter-spacing="6">WARM-UP</text>
+    </svg>
+    <div class="chip" id="s1c" style="left:110px;top:1080px;opacity:0">5:40 PM · already dark</div>
+  </div>
+
+  <div id="s2" class="clip" data-start="__S2__" data-duration="__D2__">
+    <div class="lab" style="top:290px">MY BORING RULE</div>
+    <div class="t2" style="top:340px">In this <span class="thin">order</span></div>
+    <div class="glass step" id="st1" style="top:500px"><div class="n">01</div><div><b>Shoes</b><small>on first</small></div>
+      <svg width="140" height="100" viewBox="0 0 140 100"><path d="M10 70 C10 40 40 30 60 40 L90 55 C110 60 130 62 130 78 L130 86 H10 Z" fill="#7DE3FF"/><path d="M10 86 H130" stroke="#F3F5FF" stroke-width="6"/></svg></div>
+    <div class="glass step" id="st2" style="top:720px"><div class="n">02</div><div><b>Clip</b><small>safety key on</small></div>
+      <svg width="140" height="100" viewBox="0 0 140 100"><rect x="20" y="30" width="60" height="40" rx="12" fill="none" stroke="#7DE3FF" stroke-width="8"/><path d="M80 50 H128" stroke="#7DE3FF" stroke-width="8" stroke-linecap="round"/></svg></div>
+    <div class="glass step" id="st3" style="top:940px"><div class="n">03</div><div><b>Belt</b><small>last, never first</small></div>
+      <svg width="140" height="100" viewBox="0 0 140 100"><rect x="8" y="50" width="124" height="30" rx="12" fill="none" stroke="#FFC857" stroke-width="7"/><g stroke="#FFC857" stroke-width="5"><path d="M30 50 V80"/><path d="M55 50 V80"/><path d="M80 50 V80"/><path d="M105 50 V80"/></g></svg></div>
+  </div>
+
+  <div id="s3" class="clip" data-start="__S3__" data-duration="__D3__">
+    <div class="lab" style="top:290px">BELT OFF</div>
+    <div class="t2" style="top:340px">Warm up <span class="thin">2 min</span></div>
+    <div class="glass" id="w1" style="left:110px;top:520px;width:400px;height:520px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px">
+      <svg width="200" height="200" viewBox="0 0 200 200"><circle cx="100" cy="100" r="70" fill="none" stroke="rgba(125,227,255,.25)" stroke-width="10"/><g id="spin"><path d="M100 30 A70 70 0 0 1 170 100" fill="none" stroke="#7DE3FF" stroke-width="12" stroke-linecap="round"/><path d="M160 84 L170 104 L184 86" fill="none" stroke="#7DE3FF" stroke-width="10" stroke-linecap="round"/></g></svg>
+      <div style="font:700 44px Inter">Ankle circles</div></div>
+    <div class="glass" id="w2" style="left:540px;top:520px;width:400px;height:520px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px">
+      <svg width="200" height="200" viewBox="0 0 200 200"><g id="fL"><ellipse cx="70" cy="110" rx="26" ry="50" fill="#7DE3FF"/></g><g id="fR"><ellipse cx="130" cy="110" rx="26" ry="50" fill="#A9B4FF"/></g></svg>
+      <div style="font:700 44px Inter">Easy marching</div></div>
+    <div class="chip mono" id="tm" style="left:110px;top:1070px">⏱ 2:00</div>
+  </div>
+
+  <div id="s4" class="clip" data-start="__S4__" data-duration="__D4__">
+    <div class="lab" style="top:290px">SPEED (MPH)</div>
+    <div class="t2" style="top:340px">Start <span class="thin">slow</span></div>
+    <svg id="gauge" style="position:absolute;left:140px;top:560px" width="800" height="480" viewBox="0 0 800 480">
+      <path d="M100 420 A300 300 0 0 1 700 420" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="40" stroke-linecap="round"/>
+      <path id="garc" d="M100 420 A300 300 0 0 1 700 420" fill="none" stroke="#7DE3FF" stroke-width="40" stroke-linecap="round" stroke-dasharray="943" stroke-dashoffset="943"/>
+      <g id="needle"><line x1="400" y1="420" x2="400" y2="170" stroke="#F3F5FF" stroke-width="12" stroke-linecap="round"/></g><circle cx="400" cy="420" r="26" fill="#F3F5FF"/>
+      <text x="90" y="470" fill="#A9B4FF" font-size="30" text-anchor="middle">0</text><text x="710" y="470" fill="#A9B4FF" font-size="30" text-anchor="middle">4</text>
+    </svg>
+    <div id="spd" class="mono" style="position:absolute;left:0;right:0;top:1020px;text-align:center;font:200 110px Inter;color:#7DE3FF">0.0</div>
+    <div class="chip" id="fast" style="left:110px;top:460px;opacity:0">↑ faster only when it feels easy</div>
+  </div>
+
+  <div id="s5" class="clip" data-start="__S5__" data-duration="__D5__">
+    <div class="lab" style="top:290px;color:#FFC857">SAFETY LINE</div>
+    <div class="t2" style="top:340px">Keep it <span class="thin" style="color:#FFC857">clear</span></div>
+    <div id="icons" style="position:absolute;left:110px;right:110px;top:540px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px"></div>
+  </div>
+
+  <div id="s6" class="clip" data-start="__S6__" data-duration="__D6__">
+    <svg id="bm" style="position:absolute;left:110px;top:300px" width="120" height="150" viewBox="0 0 200 250"><path d="M20 10 H180 V240 L100 180 L20 240 Z" fill="#7DE3FF"/></svg>
+    <div class="big" style="top:480px;font-size:100px;right:100px" id="s6t">Save this<br><span class="thin">for your first walk.</span></div>
+    <div class="glass" id="q" style="left:110px;right:150px;top:740px;padding:40px 44px;background:rgba(255,255,255,.1)"><div style="font:700 28px Inter;letter-spacing:5px;color:#A9B4FF">TELL US</div><div style="margin-top:14px;font:700 56px/1.12 Inter">What's your starting speed?</div>
+      <div id="opts" style="display:flex;gap:14px;margin-top:22px;font:600 34px Inter"></div></div>
+    <div id="sig" style="position:absolute;left:110px;top:1090px;font:600 30px Inter;letter-spacing:4px;color:#A9B4FF">WALKING PAD LIFE · 10K AT MY DESK</div>
+  </div>
+
+  <div id="chrome" class="clip" data-start="0" data-duration="__T__"><div id="flash" style="position:absolute;inset:0;background:linear-gradient(100deg,rgba(125,227,255,0) 20%,rgba(125,227,255,.45) 50%,rgba(125,227,255,0) 80%);opacity:0;z-index:25"></div><div id="cap"></div></div>
+  <audio id="mix" data-start="0" data-duration="__T__" src="assets/mix.wav" data-volume="1"></audio>
+</div>
+<script id="timing" type="application/json">__TIMING__</script>
+<script>
+const K = reelKit({ capActive:'#7DE3FF', capInk:'#0A0F2E' }), { tl, E, $, L, SC, D } = K;
+tl.to('#grid', { x: 72, y: 72, duration: D.T, ease: 'none' }, 0);
+tl.to('#o1', { x: -160, y: 140, duration: D.T, ease: 'sine.inOut' }, 0); tl.to('#o2', { x: 200, y: -180, duration: D.T, ease: 'sine.inOut' }, 0);
+// 1
+tl.from('#s1l', { opacity: 0, x: -30, duration: .4, ease: E }, .1); tl.from('#s1a', { opacity: 0, y: 60, duration: .5, ease: E }, .2); tl.from('#s1b', { opacity: 0, y: 60, duration: .5, ease: E }, .4);
+tl.from('#ring', { opacity: 0, scale: .8, duration: .6, ease: E, transformOrigin: '50% 50%' }, .5);
+tl.to('#arc1', { strokeDashoffset: 0, duration: 2.2, ease: 'power2.inOut' }, .8);
+tl.to('#s1c', { opacity: 1, duration: .4 }, L(2) + .2);
+// 2
+['#st1', '#st2', '#st3'].forEach((s, i) => tl.from(s, { opacity: 0, x: i % 2 ? 220 : -220, duration: .45, ease: E }, L(3) + .9 + i * .75));
+// 3
+tl.from('#w1', { opacity: 0, x: -80, duration: .45, ease: E }, SC(3).start + .2); tl.from('#w2', { opacity: 0, x: 80, duration: .45, ease: E }, SC(3).start + .35);
+tl.to('#spin', { rotation: 360 * 4, svgOrigin: '100 100', duration: SC(3).end - SC(3).start, ease: 'none' }, SC(3).start);
+for (let k = 0; k < 8; k++) { tl.to(k % 2 ? '#fL' : '#fR', { y: -26, duration: .25, yoyo: true, repeat: 1, ease: 'sine.inOut' }, SC(3).start + .5 + k * .5); }
+K.count($('#tm'), 120, 0, L(4) + .3, SC(3).end - L(4) - .6, v => '⏱ ' + Math.floor(v / 60) + ':' + String(Math.floor(v % 60)).padStart(2, '0'));
+// 4
+tl.from('#gauge', { opacity: 0, y: 60, duration: .5, ease: E }, SC(4).start + .2);
+tl.fromTo('#needle', { rotation: -90, svgOrigin: '400 420' }, { rotation: -45, svgOrigin: '400 420', duration: 1.2, ease: 'power2.out' }, L(5) + .8);
+tl.to('#garc', { strokeDashoffset: 943 * .75, duration: 1.2, ease: 'power2.out' }, L(5) + .8);
+K.count($('#spd'), 0, 1, L(5) + .8, 1.2, v => v.toFixed(1) + ' mph');
+tl.to('#fast', { opacity: 1, y: -10, duration: .4, ease: E }, L(5) + 2.4);
+// 5
+const IC = [['<circle cx="90" cy="30" r="20" fill="#FFC857"/><rect x="66" y="56" width="48" height="56" rx="18" fill="#FFC857"/>', 'Kids'], ['<ellipse cx="90" cy="76" rx="26" ry="22" fill="#FFC857"/><circle cx="56" cy="46" r="13" fill="#FFC857"/><circle cx="78" cy="28" r="13" fill="#FFC857"/><circle cx="102" cy="28" r="13" fill="#FFC857"/><circle cx="124" cy="46" r="13" fill="#FFC857"/>', 'Pets'], ['<rect x="15" y="70" width="150" height="30" rx="12" fill="none" stroke="#FFC857" stroke-width="7"/><rect x="70" y="40" width="40" height="30" rx="6" fill="#FFC857"/>', 'Stuff on belt']];
+IC.forEach(([svg, lab], i) => { const d = document.createElement('div'); d.className = 'glass'; d.style.cssText = 'position:relative;height:340px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center';
+  d.innerHTML = `<svg width="180" height="120" viewBox="0 0 180 120">${svg}<line class="x" x1="20" y1="110" x2="160" y2="10" stroke="#FF6B6B" stroke-width="10" stroke-linecap="round"/></svg><div style="font:700 38px/1.1 Inter">${lab}</div>`; $('#icons').appendChild(d);
+  const at = L(6) + .4 + i * 1; tl.from(d, { opacity: 0, y: 40, duration: .35, ease: E }, at); tl.fromTo(d.querySelector('.x'), { strokeDasharray: 180, strokeDashoffset: 180 }, { strokeDashoffset: 0, duration: .3, ease: E }, at + .3); });
+// 6
+tl.from('#bm', { y: -160, opacity: 0, duration: .55, ease: 'bounce.out' }, SC(6).start + .05); tl.from('#s6t', { y: 50, opacity: 0, duration: .45, ease: E }, SC(6).start + .15);
+tl.from('#q', { y: 60, opacity: 0, duration: .45, ease: E }, L(8) - .15);
+['0.8', '1.0', '1.5', '2.0'].forEach((v, i) => { const c = document.createElement('span'); c.textContent = v; c.style.cssText = 'padding:10px 20px;border-radius:30px;border:1.5px solid rgba(125,227,255,.5);color:#7DE3FF'; $('#opts').appendChild(c); tl.from(c, { opacity: 0, scale: .6, duration: .25, ease: 'back.out(3)' }, L(8) + .4 + i * .12); });
+tl.from('#sig', { opacity: 0, duration: .5 }, L(8) + .8);
+K.done();
+</script>
+</body>
+</html>

@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en" data-resolution="portrait">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1080, height=1920" />
+<script src="assets/gsap.min.js"></script>
+<style>
+@font-face { font-family:"Inter"; src:url(assets/fonts/inter-latin-200-normal.woff2) format("woff2"); font-weight:200; }
+@font-face { font-family:"Inter"; src:url(assets/fonts/inter-latin-300-normal.woff2) format("woff2"); font-weight:300; }
+@font-face { font-family:"Inter"; src:url(assets/fonts/inter-latin-400-normal.woff2) format("woff2"); font-weight:400; }
+@font-face { font-family:"Inter"; src:url(assets/fonts/inter-latin-600-normal.woff2) format("woff2"); font-weight:600; }
+@font-face { font-family:"Inter"; src:url(assets/fonts/inter-latin-700-normal.woff2) format("woff2"); font-weight:700; }
+@font-face { font-family:"Inter"; src:url(assets/fonts/inter-latin-800-normal.woff2) format("woff2"); font-weight:800; }
+/* Desk Walk Club: navy-indigo, grid, thin vs bold Inter, cyan accent, lavender labels, glass cards */
+:root { --bg0:#090D26; --bg1:#1B2470; --cyan:#7DE3FF; --lav:#A9B4FF; --ink:#F3F5FF; --amber:#FFC857; --glass:rgba(255,255,255,.07); --line:rgba(255,255,255,.14); }
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { width:1080px; height:1920px; overflow:hidden; background:var(--bg0); }
+#root { position:relative; width:1080px; height:1920px; overflow:hidden; font-family:"Inter", sans-serif; color:var(--ink); }
+.clip { position:absolute; inset:0; }
+#bg { background:linear-gradient(160deg, #0A0F2E 0%, #141B57 48%, #0B1030 100%); }
+#grid { position:absolute; inset:-200px; background-image:linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px); background-size:72px 72px; }
+.orb { position:absolute; border-radius:50%; filter:blur(10px); }
+#o1 { width:900px; height:900px; left:380px; top:-120px; background:radial-gradient(circle, rgba(92,104,255,.45), rgba(92,104,255,0) 65%); }
+#o2 { width:800px; height:800px; left:-260px; top:1100px; background:radial-gradient(circle, rgba(64,190,230,.28), rgba(64,190,230,0) 65%); }
+.lab { position:absolute; left:110px; font:700 30px "Inter"; letter-spacing:7px; color:var(--lav); }
+.big { position:absolute; left:110px; right:150px; font:800 128px/0.98 "Inter"; letter-spacing:-4px; }
+.thin { font-weight:200; color:var(--cyan); letter-spacing:-3px; }
+.t2 { position:absolute; left:110px; right:150px; font:800 104px/1 "Inter"; letter-spacing:-3px; }
+.sub { position:absolute; left:110px; right:150px; font:200 54px/1.15 "Inter"; color:var(--cyan); letter-spacing:-1px; }
+.glass { position:absolute; border-radius:36px; background:var(--glass); border:1.5px solid var(--line); box-shadow:inset 0 1px 0 rgba(255,255,255,.08); }
+.chip { position:absolute; padding:16px 28px; border-radius:40px; border:1.5px solid var(--line); background:rgba(125,227,255,.1); font:600 34px "Inter"; color:var(--ink); display:flex; align-items:center; gap:14px; white-space:nowrap; }
+.dim { font:700 40px "Inter"; color:#0A0F2E; background:var(--cyan); border-radius:14px; padding:6px 16px; position:absolute; white-space:nowrap; }
+.mono { font-variant-numeric:tabular-nums; }
+#cap { position:absolute; left:120px; right:190px; top:1180px; height:150px; z-index:30; }
+.cl { position:absolute; inset:0; display:flex; flex-wrap:wrap; justify-content:center; align-content:center; gap:4px 12px; opacity:0; }
+.cw { font:700 44px/1.15 "Inter"; color:#fff; padding:3px 10px; border-radius:10px; text-shadow:0 3px 16px rgba(0,0,0,.5); }
+svg text { font-family:"Inter"; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="__T__" data-width="1080" data-height="1920">
+  <div id="bg" class="clip" data-start="0" data-duration="__T__"><div id="grid"></div><div class="orb" id="o1"></div><div class="orb" id="o2"></div></div>
+
+  <!-- 1 Hook: measure first -->
+  <div id="s1" class="clip" data-start="__S1__" data-duration="__D1__">
+    <div class="lab" style="top:300px" id="s1l">BEFORE YOU BUY</div>
+    <div class="big" style="top:360px" id="s1t"><span id="s1a">Measure</span><br><span class="thin" id="s1b">3 things first</span></div>
+    <svg id="tape" style="position:absolute;left:60px;top:700px" width="960" height="330" viewBox="0 0 960 330">
+      <rect x="0" y="40" width="250" height="250" rx="60" fill="#FFC857"/><circle cx="125" cy="165" r="70" fill="#E0A83A"/><circle cx="125" cy="165" r="26" fill="#0A0F2E"/>
+      <g id="tapeband"><rect x="230" y="120" width="720" height="92" rx="6" fill="#FFE08A"/><g id="tks" stroke="#0A0F2E" stroke-width="4"></g><g id="nums" fill="#0A0F2E" font-size="26" font-weight="700"></g></g>
+      <rect x="230" y="110" width="40" height="112" rx="8" fill="#E0A83A"/>
+    </svg>
+    <div class="chip" id="s1c" style="top:1060px;left:110px;opacity:0"><svg width="40" height="40" viewBox="0 0 40 40"><path d="M6 14 L20 6 L34 14 L34 30 L20 36 L6 30 Z" fill="none" stroke="#7DE3FF" stroke-width="3"/><path d="M6 14 L20 22 L34 14 M20 22 L20 36" fill="none" stroke="#7DE3FF" stroke-width="3"/></svg>Skip the return</div>
+  </div>
+
+  <!-- 2 Floor lane -->
+  <div id="s2" class="clip" data-start="__S2__" data-duration="__D2__">
+    <div class="lab" style="top:290px">STEP 01</div>
+    <div class="t2" style="top:340px" id="s2t">Floor lane</div>
+    <div class="sub" style="top:460px" id="s2s">clear inches, straight line</div>
+    <div class="glass" id="room" style="left:110px;top:580px;width:820px;height:540px;overflow:hidden">
+      <svg width="820" height="540" viewBox="0 0 820 540">
+        <rect x="40" y="40" width="200" height="110" rx="20" fill="rgba(169,180,255,.18)" stroke="rgba(169,180,255,.5)" stroke-width="3"/><text x="140" y="104" text-anchor="middle" fill="#A9B4FF" font-size="26" font-weight="600">sofa</text>
+        <rect x="560" y="40" width="220" height="90" rx="14" fill="rgba(169,180,255,.18)" stroke="rgba(169,180,255,.5)" stroke-width="3"/><text x="670" y="94" text-anchor="middle" fill="#A9B4FF" font-size="26" font-weight="600">desk</text>
+        <rect x="600" y="400" width="180" height="100" rx="16" fill="rgba(169,180,255,.12)" stroke="rgba(169,180,255,.4)" stroke-width="3"/><text x="690" y="458" text-anchor="middle" fill="#A9B4FF" font-size="24" font-weight="600">rug</text>
+        <line id="lane" x1="100" y1="270" x2="700" y2="270" stroke="#7DE3FF" stroke-width="10" stroke-dasharray="24 16" stroke-linecap="round"/>
+        <path id="laneHead" d="M700 248 L736 270 L700 292 Z" fill="#7DE3FF"/>
+        <g id="feet" fill="#F3F5FF" opacity=".85"></g>
+      </svg>
+      <div class="dim mono" id="d1" style="left:330px;top:300px;opacity:0">___ in</div>
+    </div>
+  </div>
+
+  <!-- 3 Desk gap -->
+  <div id="s3" class="clip" data-start="__S3__" data-duration="__D3__">
+    <div class="lab" style="top:290px">STEP 02</div>
+    <div class="t2" style="top:340px">Desk gap</div>
+    <div class="sub" style="top:460px">floor → bottom of the frame</div>
+    <svg id="desk" style="position:absolute;left:110px;top:590px" width="860" height="540" viewBox="0 0 860 540">
+      <line x1="0" y1="500" x2="860" y2="500" stroke="rgba(255,255,255,.35)" stroke-width="4"/>
+      <rect id="dtop" x="140" y="120" width="600" height="34" rx="8" fill="#F3F5FF"/>
+      <rect x="160" y="154" width="560" height="22" rx="4" fill="#A9B4FF"/>
+      <rect x="180" y="176" width="24" height="324" fill="#A9B4FF"/><rect x="676" y="176" width="24" height="324" fill="#A9B4FF"/>
+      <rect id="pad" x="250" y="452" width="380" height="44" rx="14" fill="none" stroke="#7DE3FF" stroke-width="4" stroke-dasharray="14 10"/>
+      <line id="gap" x1="440" y1="496" x2="440" y2="180" stroke="#FFC857" stroke-width="8"/>
+      <path d="M424 196 L440 176 L456 196" fill="none" stroke="#FFC857" stroke-width="8" id="gapA"/>
+      <path d="M424 480 L440 500 L456 480" fill="none" stroke="#FFC857" stroke-width="8"/>
+    </svg>
+    <div class="dim mono" id="d2" style="left:600px;top:880px;opacity:0;background:#FFC857">___ in</div>
+  </div>
+
+  <!-- 4 Storage spot -->
+  <div id="s4" class="clip" data-start="__S4__" data-duration="__D4__">
+    <div class="lab" style="top:290px">STEP 03</div>
+    <div class="t2" style="top:340px">Storage spot</div>
+    <div class="sub" style="top:460px">where it lives when folded</div>
+    <div class="glass" id="p1" style="left:110px;top:590px;width:400px;height:520px">
+      <svg width="400" height="520" viewBox="0 0 400 520"><rect x="90" y="60" width="200" height="380" rx="8" fill="none" stroke="#A9B4FF" stroke-width="5"/><circle cx="260" cy="260" r="10" fill="#A9B4FF"/>
+        <rect id="fold1" x="60" y="150" width="46" height="290" rx="12" fill="#7DE3FF"/><text x="200" y="490" text-anchor="middle" fill="#F3F5FF" font-size="34" font-weight="700">Behind a door</text></svg>
+    </div>
+    <div class="glass" id="p2" style="left:540px;top:590px;width:400px;height:520px">
+      <svg width="400" height="520" viewBox="0 0 400 520"><rect x="40" y="200" width="320" height="110" rx="20" fill="none" stroke="#A9B4FF" stroke-width="5"/><rect x="40" y="160" width="90" height="60" rx="14" fill="none" stroke="#A9B4FF" stroke-width="5"/>
+        <line x1="60" y1="310" x2="60" y2="380" stroke="#A9B4FF" stroke-width="5"/><line x1="340" y1="310" x2="340" y2="380" stroke="#A9B4FF" stroke-width="5"/>
+        <rect id="fold2" x="80" y="330" width="240" height="34" rx="10" fill="#7DE3FF"/><text x="200" y="490" text-anchor="middle" fill="#F3F5FF" font-size="34" font-weight="700">Under the bed</text></svg>
+    </div>
+  </div>
+
+  <!-- 5 Match the listing -->
+  <div id="s5" class="clip" data-start="__S5__" data-duration="__D5__">
+    <div class="lab" style="top:290px">THEN</div>
+    <div class="t2" style="top:340px">Match the <span class="thin">listing</span></div>
+    <div class="glass" id="mine" style="left:110px;top:520px;width:400px;height:560px;padding:36px">
+      <div style="font:700 28px Inter;letter-spacing:5px;color:#A9B4FF">YOUR NUMBERS</div>
+      <div class="row" style="margin-top:40px;font:600 38px Inter">Floor lane<div class="mono" style="font:200 64px Inter;color:#7DE3FF">___ in</div></div>
+      <div class="row" style="margin-top:28px;font:600 38px Inter">Desk gap<div class="mono" style="font:200 64px Inter;color:#FFC857">___ in</div></div>
+      <div class="row" style="margin-top:28px;font:600 38px Inter">Storage<div class="mono" style="font:200 64px Inter;color:#7DE3FF">___ in</div></div>
+    </div>
+    <div class="glass" id="spec" style="left:540px;top:520px;width:400px;height:560px;padding:36px;background:rgba(255,255,255,.12)">
+      <div style="font:700 28px Inter;letter-spacing:5px;color:#A9B4FF">PRODUCT PAGE</div>
+      <div style="margin-top:40px;height:22px;width:240px;border-radius:11px;background:rgba(255,255,255,.18)"></div>
+      <div style="margin-top:16px;height:22px;width:180px;border-radius:11px;background:rgba(255,255,255,.12)"></div>
+      <div class="sp" style="margin-top:46px;font:600 38px Inter;display:flex;justify-content:space-between">Deck size <span class="ok" style="color:#7DE3FF">✓</span></div>
+      <div class="sp" style="margin-top:30px;font:600 38px Inter;display:flex;justify-content:space-between">Folded size <span class="ok" style="color:#7DE3FF">✓</span></div>
+    </div>
+  </div>
+
+  <!-- 6 Safety -->
+  <div id="s6" class="clip" data-start="__S6__" data-duration="__D6__">
+    <div class="lab" style="top:290px;color:#FFC857">SAFETY</div>
+    <div class="t2" style="top:340px">Clear the <span class="thin" style="color:#FFC857">lane</span></div>
+    <div id="icons" style="position:absolute;left:110px;right:110px;top:560px;display:grid;grid-template-columns:1fr 1fr;gap:28px"></div>
+  </div>
+
+  <!-- 7 CTA -->
+  <div id="s7" class="clip" data-start="__S7__" data-duration="__D7__">
+    <svg id="bm" style="position:absolute;left:110px;top:300px" width="120" height="150" viewBox="0 0 200 250"><path d="M20 10 H180 V240 L100 180 L20 240 Z" fill="#7DE3FF"/></svg>
+    <div class="big" style="top:480px;font-size:100px;right:100px" id="s7t">Save this<br><span class="thin">before you shop.</span></div>
+    <div class="glass" id="q" style="left:110px;right:150px;top:740px;padding:40px 44px;background:rgba(255,255,255,.1)"><div style="font:700 28px Inter;letter-spacing:5px;color:#A9B4FF">TELL US</div><div style="margin-top:14px;font:700 56px/1.12 Inter">Where in your place would it go?</div></div>
+    <div id="sig" style="position:absolute;left:110px;top:1010px;font:600 30px Inter;letter-spacing:4px;color:#A9B4FF">WALKING PAD LIFE · 10K AT MY DESK</div>
+  </div>
+
+  <div id="chrome" class="clip" data-start="0" data-duration="__T__"><div id="flash" style="position:absolute;inset:0;background:linear-gradient(100deg,rgba(125,227,255,0) 20%,rgba(125,227,255,.45) 50%,rgba(125,227,255,0) 80%);opacity:0;z-index:25"></div><div id="cap"></div></div>
+  <audio id="mix" data-start="0" data-duration="__T__" src="assets/mix.wav" data-volume="1"></audio>
+</div>
+<script id="timing" type="application/json">__TIMING__</script>
+<script>
+const D = JSON.parse(document.getElementById('timing').textContent);
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const tl = gsap.timeline({ paused: true }), E = 'power3.out';
+const L = i => D.lines[i - 1].start, SC = i => D.scenes[i - 1];
+// background drift
+tl.to('#grid', { x: 72, y: 72, duration: D.T, ease: 'none' }, 0);
+tl.to('#o1', { x: -160, y: 140, duration: D.T, ease: 'sine.inOut' }, 0);
+tl.to('#o2', { x: 200, y: -180, duration: D.T, ease: 'sine.inOut' }, 0);
+// scene transitions (cut on beat: slide/zoom in, blur out, light sweep)
+const ENTER = [{}, { x: 240 }, { y: 200 }, { x: -240 }, { scale: 1.2 }, { y: -200 }, { scale: .85 }];
+D.scenes.forEach((sc, i) => { const el = document.getElementById('s' + sc.id), d = sc.end - sc.start;
+  tl.fromTo(el, { scale: 1 }, { scale: 1.05, duration: d, ease: 'none', transformOrigin: '50% 40%' }, sc.start);
+  if (i) tl.from(el, { ...ENTER[i], opacity: 0, duration: .45, ease: E }, sc.start);
+  if (i < D.scenes.length - 1) tl.to(el, { opacity: 0, filter: 'blur(10px)', duration: .25, ease: 'power1.in' }, sc.end - .25);
+  if (i) { tl.fromTo('#flash', { opacity: 0, x: -1100 }, { opacity: .9, x: 0, duration: .22, ease: 'power2.in' }, sc.start - .2); tl.to('#flash', { opacity: 0, x: 1100, duration: .25, ease: 'power2.out' }, sc.start + .02); } });
+// captions
+const cap = $('#cap');
+D.lines.forEach((ln, li) => { const el = document.createElement('div'); el.className = 'cl';
+  ln.words.forEach(w => { const s = document.createElement('span'); s.className = 'cw'; s.textContent = w[0]; el.appendChild(s); }); cap.appendChild(el);
+  const next = D.lines[li + 1], off = next && next.start - ln.end < .6 ? next.start - .02 : ln.end + .35;
+  tl.fromTo(el, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: .15, ease: E }, ln.start - .08); tl.to(el, { opacity: 0, duration: .1 }, off);
+  [...el.children].forEach((s, k) => { tl.to(s, { color: '#0A0F2E', backgroundColor: '#7DE3FF', duration: .07 }, ln.words[k][1]); tl.to(s, { color: '#FFFFFF', backgroundColor: 'rgba(125,227,255,0)', duration: .1 }, ln.words[k][2]); }); });
+
+// 1 hook
+const tks = $('#tks'), nums = $('#nums');
+for (let i = 0; i <= 36; i++) { const x = 250 + i * 19; const l = document.createElementNS('http://www.w3.org/2000/svg', 'line'); l.setAttribute('x1', x); l.setAttribute('x2', x); l.setAttribute('y1', 120); l.setAttribute('y2', i % 6 ? 140 : 160); tks.appendChild(l);
+  if (i % 6 === 0 && i) { const t = document.createElementNS('http://www.w3.org/2000/svg', 'text'); t.setAttribute('x', x - 12); t.setAttribute('y', 196); t.textContent = i; nums.appendChild(t); } }
+tl.from('#s1l', { opacity: 0, x: -30, duration: .4, ease: E }, .15);
+tl.from('#s1a', { opacity: 0, y: 60, duration: .5, ease: E }, .25);
+tl.from('#s1b', { opacity: 0, y: 60, duration: .5, ease: E }, .45);
+tl.from('#tape', { opacity: 0, x: -200, duration: .5, ease: E }, .5);
+tl.fromTo('#tapeband', { scaleX: 0, transformOrigin: '230px 166px' }, { scaleX: 1, transformOrigin: '230px 166px', duration: 1.6, ease: 'power2.out' }, .8);
+tl.fromTo('#s1c', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .4, ease: E }, L(2) + .2);
+// 2 floor lane
+tl.from('#s2t', { opacity: 0, y: 50, duration: .45, ease: E }, SC(2).start + .1);
+tl.from('#s2s', { opacity: 0, y: 30, duration: .45, ease: E }, SC(2).start + .25);
+tl.from('#room', { opacity: 0, y: 60, duration: .5, ease: E }, SC(2).start + .2);
+tl.fromTo('#lane', { attr: { x2: 100 } }, { attr: { x2: 700 }, duration: 1.6, ease: 'power2.inOut' }, L(3) + .5);
+tl.fromTo('#laneHead', { x: -600, opacity: 0 }, { x: 0, opacity: 1, duration: 1.6, ease: 'power2.inOut' }, L(3) + .5);
+const feet = $('#feet'); for (let i = 0; i < 6; i++) { const e = document.createElementNS('http://www.w3.org/2000/svg', 'ellipse'); e.setAttribute('cx', 140 + i * 100); e.setAttribute('cy', i % 2 ? 300 : 240); e.setAttribute('rx', 16); e.setAttribute('ry', 24); feet.appendChild(e); tl.from(e, { opacity: 0, scale: 0, transformOrigin: 'center', duration: .2 }, L(3) + .7 + i * .25); }
+tl.fromTo('#d1', { opacity: 0, scale: .7 }, { opacity: 1, scale: 1, duration: .35, ease: 'back.out(2)' }, L(3) + 2.2);
+tl.to('#d1', { scale: 1.08, duration: .35, yoyo: true, repeat: 3, ease: 'sine.inOut' }, L(3) + 2.6);
+// 3 desk gap
+tl.from('#desk', { opacity: 0, y: 60, duration: .5, ease: E }, SC(3).start + .2);
+tl.fromTo('#gap', { attr: { y2: 496 } }, { attr: { y2: 180 }, duration: 1.2, ease: 'power2.inOut' }, L(4) + 1.2);
+tl.fromTo('#gapA', { y: 300, opacity: 0 }, { y: 0, opacity: 1, duration: 1.2, ease: 'power2.inOut' }, L(4) + 1.2);
+tl.from('#pad', { x: -400, opacity: 0, duration: .8, ease: E }, L(4) + .4);
+tl.fromTo('#d2', { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: .35, ease: E }, L(4) + 2.4);
+// 4 storage
+tl.from('#p1', { opacity: 0, x: -80, duration: .45, ease: E }, SC(4).start + .2);
+tl.from('#p2', { opacity: 0, x: 80, duration: .45, ease: E }, SC(4).start + .35);
+tl.from('#fold1', { y: 300, opacity: 0, duration: .6, ease: E }, L(5) + 3.2);
+tl.from('#fold2', { x: -300, opacity: 0, duration: .6, ease: E }, L(5) + 4.2);
+// 5 compare
+tl.from('#mine', { opacity: 0, x: -80, duration: .45, ease: E }, SC(5).start + .2);
+tl.from('#spec', { opacity: 0, x: 80, duration: .45, ease: E }, SC(5).start + .4);
+tl.from('#mine .row', { opacity: 0, y: 20, stagger: .2, duration: .3, ease: E }, L(6) + .6);
+$$('#spec .ok').forEach((o, i) => tl.from(o, { scale: 0, duration: .3, ease: 'back.out(3)' }, L(6) + 2.6 + i * .5));
+// 6 safety
+const IC = [['cord', '<path d="M10 60 C40 10 70 110 100 60 S150 20 170 50" fill="none" stroke="#FFC857" stroke-width="10" stroke-linecap="round"/>', 'Cords'], ['rug', '<rect x="20" y="25" width="140" height="70" rx="10" fill="none" stroke="#FFC857" stroke-width="9"/><path d="M20 45 H160 M20 75 H160" stroke="#FFC857" stroke-width="5"/>', 'Rugs'],
+  ['kid', '<circle cx="90" cy="30" r="20" fill="#FFC857"/><rect x="66" y="56" width="48" height="56" rx="18" fill="#FFC857"/>', 'Kids out'], ['pet', '<ellipse cx="90" cy="76" rx="26" ry="22" fill="#FFC857"/><circle cx="56" cy="46" r="13" fill="#FFC857"/><circle cx="78" cy="28" r="13" fill="#FFC857"/><circle cx="102" cy="28" r="13" fill="#FFC857"/><circle cx="124" cy="46" r="13" fill="#FFC857"/>', 'Pets out']];
+IC.forEach(([k, svg, lab], i) => { const d = document.createElement('div'); d.className = 'glass'; d.style.cssText = 'position:relative;height:250px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px';
+  d.innerHTML = `<svg width="180" height="120" viewBox="0 0 180 120">${svg}<line class="x" x1="20" y1="110" x2="160" y2="10" stroke="#FF6B6B" stroke-width="10" stroke-linecap="round"/></svg><div style="font:700 40px Inter">${lab}</div>`; $('#icons').appendChild(d);
+  const at = L(7) + .5 + i * .9; tl.from(d, { opacity: 0, y: 40, duration: .35, ease: E }, at); tl.fromTo(d.querySelector('.x'), { strokeDasharray: 180, strokeDashoffset: 180 }, { strokeDashoffset: 0, duration: .3, ease: E }, at + .3); });
+// 7 CTA
+tl.from('#bm', { y: -160, opacity: 0, duration: .55, ease: 'bounce.out' }, SC(7).start + .05);
+tl.from('#s7t', { y: 50, opacity: 0, duration: .45, ease: E }, SC(7).start + .15);
+tl.from('#q', { y: 60, opacity: 0, duration: .45, ease: E }, L(9) - .15);
+tl.from('#sig', { opacity: 0, duration: .5 }, L(9) + .5);
+window.__timelines = window.__timelines || {}; window.__timelines['main'] = tl; tl.seek(0);
+</script>
+</body>
+</html>

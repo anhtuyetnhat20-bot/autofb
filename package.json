@@ -1,0 +1,22 @@
+{
+  "name": "autofb",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Dashboard AUTOFB kèm server đăng nhập Facebook thật và đọc danh sách page qua Graph API",
+  "scripts": {
+    "start": "node --env-file=.env server.js",
+    "agent:research": "node --env-file=.env agents/research.js",
+    "agent:leader": "node --env-file=.env agents/research.js --leader",
+    "agent:designer": "node --env-file=.env agents/designer.js"
+  },
+  "engines": {
+    "node": ">=20.6"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "0.135.0",
+    "@resvg/resvg-js": "2.6.2",
+    "express": "5.3.0",
+    "hyperframes": "^0.9.59"
+  }
+}

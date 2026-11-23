@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en" data-resolution="portrait">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1080, height=1920" />
+<script src="assets/gsap.min.js"></script>
+<script src="assets/core.js"></script>
+<style>
+@font-face { font-family:"Playfair"; src:url(assets/fonts/playfair-display-latin-600-italic.woff2) format("woff2"); font-style:italic; font-weight:600; }
+@font-face { font-family:"Playfair"; src:url(assets/fonts/playfair-display-latin-700-normal.woff2) format("woff2"); font-style:normal; font-weight:700; }
+@font-face { font-family:"Inter"; src:url(assets/fonts/inter-latin-400-normal.woff2) format("woff2"); font-weight:400; }
+@font-face { font-family:"Inter"; src:url(assets/fonts/inter-latin-600-normal.woff2) format("woff2"); font-weight:600; }
+@font-face { font-family:"Inter"; src:url(assets/fonts/inter-latin-800-normal.woff2) format("woff2"); font-weight:800; }
+/* Sweatpants Society: slow and soft like candlelight, dark plum, amber glow, italic serif, a little self-deprecating */
+:root { --amber:#F6B25E; --cream:#FBEBD6; --plum:#2A1530; --rose:#E59AA8; --ink:#FBEBD6; }
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { width:1080px; height:1920px; overflow:hidden; background:#1C0D22; }
+#root { position:relative; width:1080px; height:1920px; overflow:hidden; font-family:"Inter"; color:var(--ink); }
+.clip { position:absolute; inset:0; }
+#bg { background:radial-gradient(900px 900px at 70% 30%, #4A2140 0%, rgba(74,33,64,0) 70%), linear-gradient(180deg, #24102B 0%, #1C0D22 100%); }
+#glow { position:absolute; width:1000px; height:1000px; left:240px; top:200px; border-radius:50%; background:radial-gradient(circle, rgba(246,178,94,.35), rgba(246,178,94,0) 62%); }
+#grain { position:absolute; inset:0; opacity:.08; background-image:radial-gradient(rgba(255,255,255,.6) 1px, transparent 1px); background-size:5px 5px; }
+.it { font-family:"Playfair"; font-style:italic; font-weight:600; }
+.h { position:absolute; left:120px; right:170px; font:600 100px/1.04 "Playfair"; font-style:italic; color:var(--cream); text-shadow:0 0 40px rgba(246,178,94,.25); }
+.am { color:var(--amber); }
+.lab { position:absolute; left:120px; font:600 30px "Inter"; letter-spacing:6px; color:var(--rose); }
+.card { position:absolute; border-radius:34px; background:rgba(251,235,214,.06); border:1.5px solid rgba(246,178,94,.28); }
+.stamp { display:inline-block; padding:10px 22px; border-radius:30px; font:800 30px "Inter"; letter-spacing:2px; border:3px solid; }
+#cap { position:absolute; left:120px; right:190px; top:1180px; height:150px; z-index:30; }
+.cl { position:absolute; inset:0; display:flex; flex-wrap:wrap; justify-content:center; align-content:center; gap:4px 12px; opacity:0; }
+.cw { font:600 44px/1.15 "Inter"; color:#fff; padding:3px 10px; border-radius:10px; text-shadow:0 3px 16px rgba(0,0,0,.6); }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="__T__" data-width="1080" data-height="1920">
+  <div id="bg" class="clip" data-start="0" data-duration="__T__"><div id="glow"></div><div id="grain"></div></div>
+
+  <div id="s1" class="clip" data-start="__S1__" data-duration="__D1__">
+    <div class="h" style="top:300px;font-size:120px"><span id="k1">Keep.</span><br><span id="k2" class="am">Skip.</span><br><span id="k3">Maybe.</span></div>
+    <svg id="sofa" style="position:absolute;left:150px;top:760px" width="780" height="360" viewBox="0 0 780 360">
+      <rect x="60" y="80" width="660" height="160" rx="60" fill="#6B3A5E"/><rect x="0" y="150" width="140" height="160" rx="50" fill="#7D466E"/><rect x="640" y="150" width="140" height="160" rx="50" fill="#7D466E"/>
+      <rect x="90" y="190" width="600" height="110" rx="34" fill="#8C5280"/><rect x="100" y="300" width="30" height="50" fill="#4A2140"/><rect x="650" y="300" width="30" height="50" fill="#4A2140"/>
+    </svg>
+  </div>
+
+  <div id="s2" class="clip" data-start="__S2__" data-duration="__D2__">
+    <div class="lab" style="top:300px">6 PM · LIGHTS LOW</div>
+    <div class="h" style="top:350px;font-size:84px">Everything you bought <span class="am">to feel cozy</span></div>
+    <svg id="scene" style="position:absolute;left:110px;top:620px" width="860" height="500" viewBox="0 0 860 500">
+      <rect x="80" y="230" width="700" height="140" rx="50" fill="#6B3A5E"/><rect x="40" y="280" width="120" height="140" rx="44" fill="#7D466E"/><rect x="700" y="280" width="120" height="140" rx="44" fill="#7D466E"/><rect x="110" y="320" width="640" height="90" rx="30" fill="#8C5280"/>
+      <g id="iBlanket"><path d="M180 300 Q230 250 300 290 L330 390 Q260 410 200 380 Z" fill="#E59AA8"/><path d="M200 320 L310 330 M210 350 L320 360" stroke="#F6C9D0" stroke-width="6"/></g>
+      <g id="iMug"><rect x="440" y="270" width="70" height="80" rx="12" fill="#FBEBD6"/><path d="M510 290 Q545 300 510 330" fill="none" stroke="#FBEBD6" stroke-width="10"/><path id="steam" d="M460 250 Q450 230 465 215 Q480 200 470 180 M490 250 Q480 230 495 215" fill="none" stroke="rgba(251,235,214,.6)" stroke-width="5"/></g>
+      <g id="iLamp"><rect x="690" y="190" width="10" height="180" fill="#C79A6B"/><path d="M640 90 H750 L720 190 H670 Z" fill="#F6B25E"/><circle id="bulb" cx="695" cy="200" r="70" fill="rgba(246,178,94,.35)"/></g>
+    </svg>
+  </div>
+
+  <div id="s3" class="clip" data-start="__S3__" data-duration="__D3__">
+    <div class="lab" style="top:300px">ONE HONEST QUESTION</div>
+    <div class="h" style="top:350px">Do I actually <span class="am">reach for it?</span></div>
+    <div id="three" style="position:absolute;left:110px;right:110px;top:690px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px"></div>
+  </div>
+
+  <div id="s4" class="clip" data-start="__S4__" data-duration="__D4__">
+    <div class="lab" style="top:300px">THE VERDICT</div>
+    <div class="h" style="top:350px;font-size:88px">Buy again, <span class="am">skip,</span> or maybe</div>
+    <div class="card" id="tbl" style="left:110px;right:110px;top:600px;padding:20px 36px"></div>
+  </div>
+
+  <div id="s5" class="clip" data-start="__S5__" data-duration="__D5__">
+    <div class="lab" style="top:300px;color:var(--amber)">SAFETY LINE</div>
+    <div class="h" style="top:350px;font-size:90px">Heated throw? <span class="am">Wall outlet only.</span></div>
+    <svg id="plug" style="position:absolute;left:190px;top:560px" width="700" height="420" viewBox="0 0 700 420">
+      <rect x="470" y="80" width="200" height="260" rx="30" fill="#FBEBD6"/><rect x="530" y="150" width="20" height="50" rx="6" fill="#2A1530"/><rect x="590" y="150" width="20" height="50" rx="6" fill="#2A1530"/><circle cx="570" cy="250" r="16" fill="#2A1530"/>
+      <g id="plg"><rect x="300" y="140" width="110" height="80" rx="18" fill="#F6B25E"/><rect x="410" y="155" width="40" height="12" fill="#C79A6B"/><rect x="410" y="195" width="40" height="12" fill="#C79A6B"/><path d="M300 180 C200 180 160 300 30 300" fill="none" stroke="#F6B25E" stroke-width="16"/></g>
+    </svg>
+    <div id="chips" style="position:absolute;left:110px;right:110px;top:990px;display:flex;flex-direction:column;align-items:center;gap:12px"><span class="stamp" style="border-color:#F6B25E;color:#F6B25E">✓ straight into the wall</span><span class="stamp" style="border-color:#E59AA8;color:#E59AA8">unplug when you leave</span></div>
+  </div>
+
+  <div id="s6" class="clip" data-start="__S6__" data-duration="__D6__">
+    <svg id="cnd" style="position:absolute;left:120px;top:290px" width="120" height="200" viewBox="0 0 120 200"><rect x="30" y="80" width="60" height="120" rx="10" fill="#FBEBD6"/><path id="flame" d="M60 20 C80 45 78 70 60 78 C42 70 40 45 60 20 Z" fill="#F6B25E"/></svg>
+    <div class="h" style="top:500px" id="s6t">Save this <span class="am">for tonight.</span></div>
+    <div class="card" id="q" style="left:110px;right:150px;top:740px;padding:40px 44px;background:rgba(251,235,214,.09)"><div style="font:600 28px Inter;letter-spacing:5px;color:#E59AA8">TELL US</div><div class="it" style="margin-top:14px;font-size:58px;line-height:1.12">What's one cozy thing you'd skip if you did it again?</div></div>
+    <div id="sig" style="position:absolute;left:110px;top:1100px;font:600 30px Inter;letter-spacing:4px;color:#E59AA8">SWEATPANTS SOCIETY</div>
+  </div>
+
+  <div id="chrome" class="clip" data-start="0" data-duration="__T__"><div id="flash" style="position:absolute;inset:0;background:radial-gradient(circle at 50% 40%, rgba(246,178,94,.35), rgba(246,178,94,0) 60%);opacity:0;z-index:25"></div><div id="cap"></div></div>
+  <audio id="mix" data-start="0" data-duration="__T__" src="assets/mix.wav" data-volume="1"></audio>
+</div>
+<script id="timing" type="application/json">__TIMING__</script>
+<script>
+// Chậm, dịu: vào cảnh bằng mờ dần và trôi nhẹ, không quét sáng mạnh.
+const K = reelKit({ capActive:'#F6B25E', capInk:'#2A1530', enter:[{}, { y: 60 }, { y: 60 }, { y: 60 }, { y: 60 }, { y: 60 }] }), { tl, E, $, L, SC, D } = K;
+tl.to('#glow', { x: -200, y: 300, scale: 1.15, duration: D.T, ease: 'sine.inOut' }, 0);
+for (let k = 0; k < Math.floor(D.T / .7); k++) tl.to('#glow', { opacity: k % 2 ? 1 : .8, duration: .35, ease: 'sine.inOut' }, k * .7);
+// 1
+['#k1', '#k2', '#k3'].forEach((s, i) => tl.from(s, { opacity: 0, y: 40, filter: 'blur(8px)', duration: .6, ease: E }, .2 + i * .45));
+tl.from('#sofa', { opacity: 0, y: 60, duration: .8, ease: E }, .6);
+// 2
+tl.from('#scene', { opacity: 0, y: 40, duration: .6, ease: E }, SC(2).start + .2);
+const w2 = D.lines[1].words, at = w => { const i = w2.findIndex(x => x[0].toLowerCase().startsWith(w)); return i >= 0 ? w2[i][1] : L(2) + 3; };
+tl.from('#iBlanket', { opacity: 0, y: -60, duration: .5, ease: 'back.out(2)' }, at('blanket'));
+tl.from('#iMug', { opacity: 0, y: -60, duration: .5, ease: 'back.out(2)' }, at('mug'));
+tl.from('#iLamp', { opacity: 0, y: -60, duration: .5, ease: 'back.out(2)' }, at('lamp'));
+tl.fromTo('#bulb', { opacity: 0 }, { opacity: 1, duration: .8 }, at('lamp') + .3);
+tl.to('#steam', { y: -12, opacity: .2, duration: 1.2, yoyo: true, repeat: 5, ease: 'sine.inOut' }, SC(2).start);
+// 3
+const ITEMS = [['Blanket', '<path d="M20 30 Q60 0 110 25 L130 110 Q80 125 30 100 Z" fill="#E59AA8"/>'], ['Mug', '<rect x="40" y="30" width="60" height="70" rx="10" fill="#FBEBD6"/><path d="M100 45 Q130 55 100 85" fill="none" stroke="#FBEBD6" stroke-width="9"/>'], ['Lamp', '<rect x="66" y="60" width="8" height="60" fill="#C79A6B"/><path d="M30 10 H110 L90 60 H50 Z" fill="#F6B25E"/>']];
+ITEMS.forEach(([n, svg], i) => { const d = document.createElement('div'); d.className = 'card'; d.style.cssText = 'position:relative;height:330px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px';
+  d.innerHTML = `<svg width="140" height="130" viewBox="0 0 140 130">${svg}</svg><div class="it" style="font-size:44px">${n}</div><div class="q" style="font:800 40px Inter;color:#F6B25E">?</div>`; $('#three').appendChild(d);
+  tl.from(d, { opacity: 0, y: 40, duration: .45, ease: E }, L(3) + .4 + i * .3); tl.from(d.querySelector('.q'), { scale: 0, duration: .3, ease: 'back.out(3)' }, L(3) + 3 + i * .25); });
+// 4
+const V = [['Blanket', 'BUY AGAIN', '#9BE3B0'], ['Mug', 'MAYBE', '#F6B25E'], ['Lamp', 'SKIP', '#E59AA8']];
+V.forEach(([n, v, c], i) => { const r = document.createElement('div'); r.style.cssText = 'display:flex;align-items:center;gap:20px;height:140px;border-top:' + (i ? '1.5px solid rgba(246,178,94,.2)' : '0');
+  r.innerHTML = `<div class="it" style="font-size:52px;width:230px">${n}</div><div style="flex:1;font:400 30px Inter;color:rgba(251,235,214,.6)">Price: <span style="display:inline-block;width:110px;border-bottom:3px dashed rgba(251,235,214,.5)">&nbsp;</span></div><span class="stamp" style="border-color:${c};color:${c}">${v}</span>`; $('#tbl').appendChild(r);
+  const st = r.querySelector('.stamp'); tl.fromTo(st, { opacity: 0, scale: 2.2, rotation: -14 }, { opacity: 1, scale: 1, rotation: -4, duration: .3, ease: 'power4.in' }, L(4) + 1.2 + i * .7); });
+tl.from('#tbl', { opacity: 0, y: 50, duration: .5, ease: E }, SC(4).start + .2);
+// 5
+tl.from('#plug', { opacity: 0, duration: .5 }, SC(5).start + .2);
+tl.from('#plg', { x: -200, duration: 1, ease: 'power2.out' }, L(5) + 1.4);
+tl.from('#chips span', { opacity: 0, y: 30, stagger: .6, duration: .4, ease: E }, L(5) + 2.2);
+// 6
+tl.from('#cnd', { opacity: 0, y: 40, duration: .6, ease: E }, SC(6).start + .1);
+tl.to('#flame', { scaleY: 1.12, scaleX: .92, transformOrigin: '60px 78px', duration: .25, yoyo: true, repeat: 18, ease: 'sine.inOut' }, SC(6).start);
+tl.from('#s6t', { opacity: 0, y: 40, filter: 'blur(8px)', duration: .6, ease: E }, SC(6).start + .2);
+tl.from('#q', { opacity: 0, y: 50, duration: .55, ease: E }, L(7) - .15);
+tl.from('#sig', { opacity: 0, duration: .6 }, L(7) + .8);
+K.done();
+</script>
+</body>
+</html>

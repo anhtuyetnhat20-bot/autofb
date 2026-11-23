@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en" data-resolution="portrait">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1080, height=1920" />
+<script src="assets/gsap.min.js"></script>
+<style>
+@font-face { font-family:"Audiowide"; src:url(assets/fonts/audiowide-latin-400-normal.woff2) format("woff2"); }
+@font-face { font-family:"VT323"; src:url(assets/fonts/vt323-latin-400-normal.woff2) format("woff2"); }
+@font-face { font-family:"Inter"; src:url(assets/fonts/inter-latin-400-normal.woff2) format("woff2"); font-weight:400; }
+@font-face { font-family:"Inter"; src:url(assets/fonts/inter-latin-700-normal.woff2) format("woff2"); font-weight:700; }
+@font-face { font-family:"Inter"; src:url(assets/fonts/inter-latin-800-normal.woff2) format("woff2"); font-weight:800; }
+/* Remember When?: synthwave 80s — striped sunset, neon pink/cyan grid, chrome italic type, CRT green text */
+:root { --pink:#FF3EA5; --cyan:#3EF0FF; --sun1:#FFD23F; --sun2:#FF4F8B; --night:#12052B; --crt:#7CFF8A; --ink:#FFFFFF; }
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { width:1080px; height:1920px; overflow:hidden; background:var(--night); }
+#root { position:relative; width:1080px; height:1920px; overflow:hidden; font-family:"Inter"; color:var(--ink); }
+.clip { position:absolute; inset:0; }
+#bg { background:linear-gradient(180deg, #12052B 0%, #2B0B4F 38%, #6A1B6E 58%, #12052B 59%, #0B0320 100%); }
+#sun { position:absolute; left:240px; top:620px; width:600px; height:600px; border-radius:50%; background:linear-gradient(180deg, var(--sun1) 0%, #FF8A3D 45%, var(--sun2) 100%);
+  -webkit-mask:linear-gradient(180deg, #000 0 52%, transparent 52% 56%, #000 56% 64%, transparent 64% 69%, #000 69% 76%, transparent 76% 82%, #000 82% 88%, transparent 88% 95%, #000 95%); box-shadow:0 0 120px rgba(255,79,139,.6); opacity:.9; }
+#floor { position:absolute; left:-540px; right:-540px; top:1130px; height:1200px; transform-origin:50% 0; transform:perspective(700px) rotateX(72deg);
+  background-image:linear-gradient(rgba(62,240,255,.75) 3px, transparent 3px), linear-gradient(90deg, rgba(255,62,165,.75) 3px, transparent 3px); background-size:120px 120px; }
+#horizon { position:absolute; left:0; right:0; top:1128px; height:6px; background:var(--pink); box-shadow:0 0 30px var(--pink), 0 0 60px var(--pink); }
+.star { position:absolute; width:4px; height:4px; border-radius:50%; background:#fff; }
+#scan { position:absolute; inset:0; background:repeating-linear-gradient(0deg, rgba(0,0,0,.18) 0 2px, transparent 2px 5px); mix-blend-mode:multiply; pointer-events:none; z-index:40; }
+.chrome { position:absolute; left:110px; right:150px; font:400 92px/1.05 "Audiowide"; font-style:italic; transform:skewX(-6deg); text-align:center;
+  background:linear-gradient(180deg, #FFFFFF 0%, #CFE9FF 45%, #5B6CFF 50%, #FFFFFF 54%, #FF9BD0 100%); -webkit-background-clip:text; background-clip:text; color:transparent; filter:drop-shadow(0 4px 0 #2B0B4F) drop-shadow(0 0 24px rgba(255,62,165,.6)); }
+.neon { position:absolute; font:400 44px "Audiowide"; color:var(--cyan); text-shadow:0 0 12px var(--cyan), 0 0 30px rgba(62,240,255,.6); letter-spacing:3px; }
+.crt { font-family:"VT323"; color:var(--crt); text-shadow:0 0 10px rgba(124,255,138,.8); }
+.panel { position:absolute; border-radius:28px; background:rgba(18,5,43,.72); border:3px solid var(--pink); box-shadow:0 0 30px rgba(255,62,165,.45), inset 0 0 30px rgba(255,62,165,.15); }
+#cap { position:absolute; left:120px; right:190px; top:1185px; height:150px; z-index:30; }
+.cl { position:absolute; inset:0; display:flex; flex-wrap:wrap; justify-content:center; align-content:center; gap:4px 12px; opacity:0; }
+.cw { font:800 46px/1.15 "Inter"; color:#fff; padding:3px 10px; border-radius:10px; text-shadow:0 3px 16px rgba(0,0,0,.7); }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="__T__" data-width="1080" data-height="1920">
+  <div id="bg" class="clip" data-start="0" data-duration="__T__"><div id="stars"></div><div id="sun"></div><div id="floor"></div><div id="horizon"></div></div>
+
+  <!-- 1 Hook -->
+  <div id="s1" class="clip" data-start="__S1__" data-duration="__D1__">
+    <div class="chrome" id="s1t" style="top:300px">That sound meant nobody could call.</div>
+    <svg id="phone" style="position:absolute;left:330px;top:640px" width="420" height="320" viewBox="0 0 420 320">
+      <path d="M40 140 Q40 90 90 90 H330 Q380 90 380 140 V270 Q380 300 350 300 H70 Q40 300 40 270 Z" fill="#E8DCC4"/>
+      <g id="hs"><path d="M20 70 Q20 20 80 20 H340 Q400 20 400 70 V95 Q400 110 380 110 H330 Q310 110 310 90 V70 H110 V90 Q110 110 90 110 H40 Q20 110 20 95 Z" fill="#D7C8AA"/></g>
+      <circle cx="210" cy="205" r="62" fill="#CBBB9B"/><circle cx="210" cy="205" r="20" fill="#E8DCC4"/>
+      <g fill="#E8DCC4">__DIAL__</g>
+    </svg>
+  </div>
+
+  <!-- 2 The modem -->
+  <div id="s2" class="clip" data-start="__S2__" data-duration="__D2__">
+    <div class="panel" id="clock" style="left:110px;top:290px;width:360px;height:150px;display:flex;align-items:center;justify-content:center"><span style="font:400 92px VT323;color:#FF3B3B;text-shadow:0 0 18px rgba(255,59,59,.9)">7:42<small style="font-size:40px"> PM</small></span></div>
+    <div class="neon" id="s2l" style="left:510px;top:340px">Upstairs…</div>
+    <svg id="pc" style="position:absolute;left:150px;top:480px" width="780" height="620" viewBox="0 0 780 620">
+      <rect x="40" y="0" width="700" height="480" rx="36" fill="#D9CDB3"/><rect x="90" y="44" width="600" height="380" rx="20" fill="#0B1A10"/>
+      <rect x="260" y="480" width="260" height="60" fill="#C7BA9C"/><rect x="140" y="540" width="500" height="60" rx="14" fill="#D9CDB3"/>
+      <foreignObject x="110" y="64" width="560" height="340"><div xmlns="http://www.w3.org/1999/xhtml" class="crt" style="font-size:46px;line-height:1.15;padding:10px 16px">
+        <div>C:\&gt; DIAL 555-0142</div><div id="cn">CONNECTING<span id="dots"></span></div><div id="bps" style="opacity:0">28.8 kbps ▮</div><div id="nc" style="opacity:0;color:#FF4B4B;text-shadow:0 0 12px rgba(255,75,75,.9)">NO CARRIER</div></div></foreignObject>
+    </svg>
+    <svg id="wave" style="position:absolute;left:110px;top:1080px" width="820" height="90" viewBox="0 0 820 90"><polyline id="wl" fill="none" stroke="#3EF0FF" stroke-width="5" points=""/></svg>
+    <div class="neon" id="click" style="left:640px;top:450px;font-size:96px;color:#FFD23F;text-shadow:0 0 20px rgba(255,210,63,.9);transform:rotate(-12deg);opacity:0">CLICK!</div>
+  </div>
+
+  <!-- 3 Hang up! -->
+  <div id="s3" class="clip" data-start="__S3__" data-duration="__D3__">
+    <div class="panel" id="nc2" style="left:110px;right:110px;top:300px;height:200px;display:flex;align-items:center;justify-content:center"><span class="crt" style="font-size:120px;color:#FF4B4B;text-shadow:0 0 18px rgba(255,75,75,.9)">NO CARRIER</span></div>
+    <div id="bub" style="position:absolute;left:130px;right:170px;top:600px;padding:46px 50px;border-radius:44px;background:#fff;color:#2B0B4F;font:400 70px/1.08 Audiowide;transform:rotate(-2deg)">“Hang up! I'm still connecting!”
+      <svg style="position:absolute;left:120px;bottom:-60px" width="90" height="70" viewBox="0 0 90 70"><path d="M0 0 H90 L20 70 Z" fill="#fff"/></svg></div>
+  </div>
+
+  <!-- 4 One line -->
+  <div id="s4" class="clip" data-start="__S4__" data-duration="__D4__">
+    <div class="chrome" id="s4t" style="top:300px">One line. One house.</div>
+    <svg id="house" style="position:absolute;left:140px;top:560px" width="800" height="300" viewBox="0 0 800 300">
+      <path d="M40 150 L160 50 L280 150 V280 H40 Z" fill="none" stroke="#FF3EA5" stroke-width="8"/><rect x="130" y="190" width="60" height="90" fill="none" stroke="#FF3EA5" stroke-width="6"/>
+      <path id="wire" d="M280 200 C380 120 460 280 560 200 S700 160 760 200" fill="none" stroke="#3EF0FF" stroke-width="8"/>
+      <rect x="720" y="170" width="70" height="60" rx="10" fill="#3EF0FF"/>
+    </svg>
+    <div id="tog" class="panel" style="left:160px;right:200px;top:920px;height:160px;display:flex;align-items:center;justify-content:space-around;font:400 52px Audiowide">
+      <span id="on1">ONLINE</span><div style="position:relative;width:150px;height:70px;border-radius:35px;background:#2B0B4F;border:3px solid #3EF0FF"><i id="knob" style="position:absolute;left:6px;top:6px;width:52px;height:52px;border-radius:50%;background:#3EF0FF;display:block"></i></div><span id="on2" style="opacity:.4">CALLING</span></div>
+  </div>
+
+  <!-- 5 Around the '90s -->
+  <div id="s5" class="clip" data-start="__S5__" data-duration="__D5__">
+    <div class="chrome" id="s5t" style="top:420px;font-size:130px">DIAL-UP</div>
+    <div class="neon" id="s5s" style="left:0;right:0;text-align:center;top:600px;font-size:64px">around the '90s</div>
+    <div class="crt" id="vhs" style="position:absolute;left:120px;top:780px;font-size:64px;color:#fff;text-shadow:0 0 8px #fff">▶ PLAY  <span style="opacity:.8">SP 0:07:42</span></div>
+    <div style="position:absolute;right:150px;top:1095px;font:700 26px Inter;letter-spacing:4px;color:rgba(255,255,255,.7)">ILLUSTRATION</div>
+  </div>
+
+  <!-- 6 CTA -->
+  <div id="s6" class="clip" data-start="__S6__" data-duration="__D6__">
+    <svg id="floppy" style="position:absolute;left:110px;top:290px" width="200" height="200" viewBox="0 0 200 200"><rect x="10" y="10" width="180" height="180" rx="14" fill="#3EF0FF"/><rect x="50" y="10" width="100" height="60" fill="#12052B"/><rect x="115" y="20" width="22" height="40" fill="#3EF0FF"/><rect x="40" y="110" width="120" height="80" rx="6" fill="#fff"/></svg>
+    <div class="chrome" id="s6t" style="top:520px;text-align:left;left:110px">Save this for later.</div>
+    <div class="panel" id="q" style="left:110px;right:150px;top:760px;padding:40px 44px"><div style="font:700 28px Inter;letter-spacing:5px;color:#3EF0FF">TELL US</div><div style="margin-top:14px;font:800 56px/1.12 Inter">Who picked up the phone at the worst moment?</div></div>
+    <div id="sig" class="neon" style="left:110px;top:1090px;font-size:32px">REMEMBER WHEN? 80s/90s KIDS</div>
+  </div>
+
+  <div id="chrome" class="clip" data-start="0" data-duration="__T__"><div id="flash" style="position:absolute;inset:0;background:linear-gradient(100deg,rgba(255,62,165,0) 20%,rgba(255,62,165,.5) 50%,rgba(62,240,255,0) 80%);opacity:0;z-index:25"></div><div id="cap"></div><div id="scan"></div></div>
+  <audio id="mix" data-start="0" data-duration="__T__" src="assets/mix.wav" data-volume="1"></audio>
+</div>
+<script id="timing" type="application/json">__TIMING__</script>
+<script>
+const D = JSON.parse(document.getElementById('timing').textContent);
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const tl = gsap.timeline({ paused: true }), E = 'power3.out';
+const L = i => D.lines[i - 1].start, SC = i => D.scenes[i - 1];
+let seed = 11; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+for (let i = 0; i < 60; i++) { const s = document.createElement('i'); s.className = 'star'; Object.assign(s.style, { left: rnd() * 1080 + 'px', top: rnd() * 1050 + 'px', opacity: .3 + rnd() * .7 }); $('#stars').appendChild(s); tl.to(s, { opacity: .1, duration: .6 + rnd(), yoyo: true, repeat: 30, ease: 'sine.inOut' }, rnd()); }
+tl.fromTo('#floor', { backgroundPositionY: '0px' }, { backgroundPositionY: (120 * Math.round(D.T * 1.5)) + 'px', duration: D.T, ease: 'none' }, 0);
+tl.to('#sun', { y: 40, duration: D.T, ease: 'none' }, 0);
+const ENTER = [{}, { x: 240 }, { scale: 1.25 }, { y: 200 }, { x: -240 }, { scale: .85 }];
+D.scenes.forEach((sc, i) => { const el = document.getElementById('s' + sc.id), d = sc.end - sc.start;
+  tl.fromTo(el, { scale: 1 }, { scale: 1.05, duration: d, ease: 'none', transformOrigin: '50% 40%' }, sc.start);
+  if (i) tl.from(el, { ...ENTER[i], opacity: 0, duration: .45, ease: E }, sc.start);
+  if (i < D.scenes.length - 1) tl.to(el, { opacity: 0, filter: 'blur(10px)', duration: .25, ease: 'power1.in' }, sc.end - .25);
+  if (i) { tl.fromTo('#flash', { opacity: 0, x: -1100 }, { opacity: .9, x: 0, duration: .22, ease: 'power2.in' }, sc.start - .2); tl.to('#flash', { opacity: 0, x: 1100, duration: .25, ease: 'power2.out' }, sc.start + .02); } });
+const cap = $('#cap');
+D.lines.forEach((ln, li) => { const el = document.createElement('div'); el.className = 'cl';
+  ln.words.forEach(w => { const s = document.createElement('span'); s.className = 'cw'; s.textContent = w[0]; el.appendChild(s); }); cap.appendChild(el);
+  const next = D.lines[li + 1], off = next && next.start - ln.end < .6 ? next.start - .02 : ln.end + .35;
+  tl.fromTo(el, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: .15, ease: E }, ln.start - .08); tl.to(el, { opacity: 0, duration: .1 }, off);
+  [...el.children].forEach((s, k) => { tl.to(s, { color: '#12052B', backgroundColor: '#FF3EA5', duration: .07 }, ln.words[k][1]); tl.to(s, { color: '#FFFFFF', backgroundColor: 'rgba(255,62,165,0)', duration: .1 }, ln.words[k][2]); }); });
+// 1
+tl.from('#s1t', { opacity: 0, scale: 1.3, duration: .5, ease: E }, .1);
+tl.from('#phone', { opacity: 0, y: 120, duration: .6, ease: E }, .3);
+tl.to('#hs', { y: -16, duration: .08, yoyo: true, repeat: 9, ease: 'none' }, .8);
+// 2
+tl.from('#clock', { opacity: 0, x: -60, duration: .4, ease: E }, SC(2).start + .1);
+tl.from('#pc', { opacity: 0, y: 80, duration: .5, ease: E }, SC(2).start + .2);
+const dots = { n: 0 }; tl.to(dots, { n: 12, duration: 3, ease: 'none', onUpdate: () => { $('#dots').textContent = '.'.repeat(Math.floor(dots.n) % 4); } }, L(2) + .3);
+tl.to('#bps', { opacity: 1, duration: .1 }, L(2) + 2.6);
+const wl = $('#wl'), wv = { a: 0 };
+tl.to(wv, { a: 1, duration: L(3) + .4 - (L(2) + .2), ease: 'none', onUpdate: () => { let p = ''; for (let x = 0; x <= 820; x += 10) { const amp = 8 + 30 * wv.a * Math.abs(Math.sin(x * .05 + wv.a * 40)); p += `${x},${45 + amp * Math.sin(x * .3 + wv.a * 60)} `; } wl.setAttribute('points', p); } }, L(2) + .2);
+tl.from('#s2l', { opacity: 0, duration: .3 }, L(3) - .1);
+tl.fromTo('#click', { opacity: 0, scale: 2 }, { opacity: 1, scale: 1, duration: .25, ease: 'back.out(3)' }, L(3) + .35);
+tl.to(wv, { a: 0, duration: .3 }, L(3) + .45);
+tl.to('#nc', { opacity: 1, duration: .1 }, L(3) + 1.4);
+// 3
+tl.from('#nc2', { opacity: 0, duration: .1, repeat: 4, yoyo: true }, SC(3).start + .1);
+tl.fromTo('#bub', { opacity: 0, scale: .4, rotation: -10 }, { opacity: 1, scale: 1, rotation: -2, duration: .45, ease: 'back.out(2)' }, L(4) + 1.6);
+tl.to('#bub', { x: 8, duration: .05, yoyo: true, repeat: 9 }, L(4) + 2.1);
+// 4
+tl.from('#s4t', { opacity: 0, y: 50, duration: .45, ease: E }, SC(4).start + .1);
+tl.from('#house', { opacity: 0, duration: .45 }, SC(4).start + .3);
+tl.fromTo('#wire', { strokeDasharray: 700, strokeDashoffset: 700 }, { strokeDashoffset: 0, duration: 1, ease: E }, SC(4).start + .4);
+tl.from('#tog', { opacity: 0, y: 40, duration: .4, ease: E }, L(5) + 1.2);
+for (let k = 0; k < 2; k++) { tl.to('#knob', { left: 86, duration: .2 }, L(5) + 2 + k * .8); tl.to('#on2', { opacity: 1, duration: .2 }, L(5) + 2 + k * .8); tl.to('#on1', { opacity: .4, duration: .2 }, L(5) + 2 + k * .8); if (k === 0) { tl.to('#knob', { left: 6, duration: .2 }, L(5) + 2.4); tl.to('#on2', { opacity: .4, duration: .2 }, L(5) + 2.4); tl.to('#on1', { opacity: 1, duration: .2 }, L(5) + 2.4); } }
+// 5
+tl.from('#s5t', { opacity: 0, scale: 1.4, duration: .5, ease: E }, SC(5).start + .1);
+tl.from('#s5s', { opacity: 0, y: 30, duration: .4, ease: E }, SC(5).start + .5);
+tl.from('#vhs', { opacity: 0, duration: .1, repeat: 4, yoyo: true }, SC(5).start + .8);
+// 6
+tl.from('#floppy', { opacity: 0, rotation: -25, y: -100, duration: .55, ease: 'back.out(2)' }, SC(6).start + .05);
+tl.from('#s6t', { opacity: 0, x: -60, duration: .45, ease: E }, SC(6).start + .15);
+tl.from('#q', { opacity: 0, y: 60, duration: .45, ease: E }, L(8) - .15);
+tl.from('#sig', { opacity: 0, duration: .5 }, L(8) + .6);
+window.__timelines = window.__timelines || {}; window.__timelines['main'] = tl; tl.seek(0);
+</script>
+</body>
+</html>
